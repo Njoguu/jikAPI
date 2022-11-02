@@ -1,0 +1,37 @@
+#carousel{
+    height: 80vh;
+    /* background-color: aqua; */
+    margin-top: 25px;
+}
+
+#details{
+    height: 100vh;
+    margin-top: 100px;
+}
+
+.navbar{
+    height: 80px;
+}
+
+/* details section */
+.section-container{
+    padding:60px 0;
+    height: 100vh;
+}
+.section-container.no-padding{
+    padding-top:0;
+}
+.footer-container{
+    padding:30px 0;
+    border-top:1px solid #eee
+}
+.footer-container .email-container{
+    padding:30px 0;
+}
+.section-container-spacer{
+    margin-bottom:30px;
+}
+.border-section-container{
+    border-top:1px solid #eee;
+    border-bottom:1px solid #eee;
+}
