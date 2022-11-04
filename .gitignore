@@ -1,2 +1,6 @@
 jik-api
 __pycache__
+.vscode
+.flaskenv
+instance
+.env

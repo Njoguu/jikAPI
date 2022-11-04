@@ -1,90 +1,138 @@
 {% extends 'base.html' %}
 
-{% block title %} Home {% endblock%}
+{% block title %} jik-api {% endblock %}
 
-{% block content %}
-<section id="carousel">
-    <div id="carouselExampleFade" class="carousel slide carousel-fade" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="..." class="d-block w-100" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img src="..." class="d-block w-100" alt="...">
-          </div>
-          <div class="carousel-item">
-            <img src="..." class="d-block w-100" alt="...">
-          </div>
+
+{% block content%}
+    <!-- Hero Section -->
+    <section id="hero">
+        <p>This is the hero section</p>
+    </section>
+
+    <!-- Section #2 -->
+    <section id="details">
+        <div class="section-container border-section-container">
+            <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 section-container-spacer">
+                            <div class="text-center">
+                                <h2>Vivamus laoreet</h2>
+                                <p> Auctor augue mauris augue neque. Posuere lorem ipsum dolor sit amet consectetur adipiscing.<br> Porta non
+                                    pulvinar neque laoreet. Viverra ipsum nunc aliquet bibendum. </p>
+                            </div>
+                        </div>
+        
+                        <div class="col-md-4">
+                            <div class="fa-container">
+                                <i class="fa fa-comment-o fa-3x" aria-hidden="true"></i>
+                            </div>
+                            <div class="text-center">
+                                <h3>Consectetur</h3>
+                            </div>
+                            <div>
+                                <p>Auctor augue mauris augue neque. Posuere lorem ipsum dolor sit amet consectetur adipiscing. Porta
+                                    non pulvinar neque laoreet. Viverra ipsum nunc aliquet bibendum. Iaculis urna id volutpat lacus.
+                                    Turpis egestas pretium aenean pharetra magna ac.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="fa-container">
+                                <i class="fa fa-heart-o fa-3x" aria-hidden="true"></i>
+                            </div>
+                            <div class="text-center">
+                                <h3>Malesuada</h3>
+                            </div>
+                            <div>
+                                <p>Auctor augue mauris augue neque. Posuere lorem ipsum dolor sit amet consectetur adipiscing. Porta
+                                    non pulvinar neque laoreet. Viverra ipsum nunc aliquet bibendum. Iaculis urna id volutpat lacus.
+                                    Turpis egestas pretium aenean pharetra magna ac.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="fa-container">
+                                <i class="fa fa-bell-o fa-3x" aria-hidden="true"></i>
+                            </div>
+                            <div class="text-center">
+                                <h3>Phasellus</h3>
+                            </div>
+                            <div>
+                                <p>Auctor augue mauris augue neque. Posuere lorem ipsum dolor sit amet consectetur adipiscing. Porta
+                                    non pulvinar neque laoreet. Viverra ipsum nunc aliquet bibendum. Iaculis urna id volutpat lacus.
+                                    Turpis egestas pretium aenean pharetra magna ac. 
+                                </p>
+                            </div>
+                        </div>
+        
+                    </div>
+            </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
-</section>
-<section id="details">
-    <div class="section-container border-section-container">
-        <div class="container">
+    </section>
+
+    <!-- section #3 -->
+    <section id="misc">
+        <div class="section-container background-color-container white-text-container">
+            <div class="container">
                 <div class="row">
-                    <div class="col-md-12 section-container-spacer">
+                    <div class="col-xs-12">
                         <div class="text-center">
                             <h2>Vivamus laoreet</h2>
-                            <p> Auctor augue mauris augue neque. Posuere lorem ipsum dolor sit amet consectetur adipiscing.<br> Porta non
-                                pulvinar neque laoreet. Viverra ipsum nunc aliquet bibendum. </p>
+                            <p> Auctor augue mauris augue neque. Posuere lorem ipsum dolor sit amet consectetur adipiscing. Porta non
+                                pulvinar neque laoreet. Viverra ipsum nunc aliquet bibendum. Iaculis urna id volutpat lacus. Turpis
+                                egestas pretium aenean pharetra magna ac. Id cursus metus aliquam eleifend mi. </p>
+                            <a href="./download.html" title="" class="btn btn-primary btn-lg">Download</a>
                         </div>
                     </div>
-    
-                    <div class="col-md-4">
-                        <div class="fa-container">
-                            <i class="fa fa-comment-o fa-3x" aria-hidden="true"></i>
-                        </div>
-                        <div class="text-center">
-                            <h3>Consectetur</h3>
-                        </div>
-                        <div>
-                            <p>Auctor augue mauris augue neque. Posuere lorem ipsum dolor sit amet consectetur adipiscing. Porta
-                                non pulvinar neque laoreet. Viverra ipsum nunc aliquet bibendum. Iaculis urna id volutpat lacus.
-                                Turpis egestas pretium aenean pharetra magna ac.</p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="fa-container">
-                            <i class="fa fa-heart-o fa-3x" aria-hidden="true"></i>
-                        </div>
-                        <div class="text-center">
-                            <h3>Malesuada</h3>
-                        </div>
-                        <div>
-                            <p>Auctor augue mauris augue neque. Posuere lorem ipsum dolor sit amet consectetur adipiscing. Porta
-                                non pulvinar neque laoreet. Viverra ipsum nunc aliquet bibendum. Iaculis urna id volutpat lacus.
-                                Turpis egestas pretium aenean pharetra magna ac.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="fa-container">
-                            <i class="fa fa-bell-o fa-3x" aria-hidden="true"></i>
-                        </div>
-                        <div class="text-center">
-                            <h3>Phasellus</h3>
-                        </div>
-                        <div>
-                            <p>Auctor augue mauris augue neque. Posuere lorem ipsum dolor sit amet consectetur adipiscing. Porta
-                                non pulvinar neque laoreet. Viverra ipsum nunc aliquet bibendum. Iaculis urna id volutpat lacus.
-                                Turpis egestas pretium aenean pharetra magna ac. 
-                            </p>
-                        </div>
-                    </div>
-    
                 </div>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
-
+    <!-- Footer -->
+    <section>
+        <footer>
+            <div class="section-container footer-container">
+                <div class="container">
+                    <div class="row">
+                            <div class="col-md-4">
+                                <h4>About us</h4>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet consectetur dolor</p>
+                            </div>
+        
+                            <div class="col-md-4">
+                                <h4>Do you like ? Share this !</h4>
+                                <p>
+                                    <a href="https://facebook.com/" class="social-round-icon white-round-icon fa-icon" title="">
+                                    <i class="fa fa-facebook" aria-hidden="true"></i>
+                                </a>
+                                <a href="https://twitter.com/" class="social-round-icon white-round-icon fa-icon" title="">
+                                    <i class="fa fa-twitter" aria-hidden="true"></i>
+                                </a>
+                                <a href="https://www.linkedin.com/" class="social-round-icon white-round-icon fa-icon" title="">
+                                    <i class="fa fa-linkedin" aria-hidden="true"></i>
+                                </a>
+                                </p>
+                                <p><small>© Untitled | Website created with <a href="http://www.mashup-template.com/" class="link-like-text" title="Create website with free html template">Mashup Template</a>/<a href="http://www.unsplash.com/" class="link-like-text" title="Beautiful Free Images">Unsplash</a></small></p>    
+                            </div>
+        
+                            <div class="col-md-4">
+                                <h4>Subscribe to newsletter</h4>
+                                
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control footer-input-text">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn btn-primary btn-newsletter ">OK</button>
+                                        </div>
+                                    </div>
+                                </div>
+        
+        
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </section>
 
 {% endblock %}
