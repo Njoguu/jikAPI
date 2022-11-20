@@ -4,3 +4,5 @@ __pycache__
 .flaskenv
 instance
 .env
+node_modules
+get_data.py
