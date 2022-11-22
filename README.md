@@ -1,4 +1,6 @@
 # jik-api-v2.0-Alpha
+[![Github Issues](https://img.shields.io/github/issues-raw/Njoguu/jik-api-v2.0-Alpha)](https://github.com/Njoguu/jik-api-v2.0-Alpha/issues) 
+[![Github pull requests](https://img.shields.io/github/issues-pr-raw/Njoguu/jik-api-v2.0-Alpha?color=yellow)](https://github.com/Njoguu/jik-api-v2.0-Alpha/pulls)
 
 ### Setup & Installtion
 
