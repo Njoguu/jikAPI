@@ -30,6 +30,6 @@ def create_app(test_config=None):
 
     @app.route('/api/v1/jobs')
     def available_jobs():
-        return render_template('')
+        pass
 
     return app

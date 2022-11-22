@@ -2,10 +2,9 @@ jik-api
 
 .vscode
 .flaskenv
-
+config.ini
 .env
 
-get_data.py
 
 *.pyc
 __pycache__/
