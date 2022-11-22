@@ -1,6 +1,5 @@
 try:
-    import sys
-    sys.path.insert(0, '/media/njoguu/New Volume/Projects/Web Projects/jik-api-v2.0-Alpha/src')
+    
     from backend import *
     import unittest
 except Exception as err:
