@@ -9,7 +9,7 @@ def get_data(tableName):
     
     database.truncateTable(tableName)
 
-    pages = 5
+    pages = 10
     for page in range(pages):
         
         res = requests.get('https://www.kenyamoja.com/jobs?page=' + str(page))
