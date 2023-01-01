@@ -31,11 +31,14 @@ def insertData(job, tableName):
         values('{job[0]}','{job[1]}','{job[2]}')
     '''
 
-    cur.execute(insertSQL)
-    conn.commit()
-    cur.close()
-    conn.close()
-
+    try:
+        cur.execute(insertSQL)
+        conn.commit()
+        cur.close()
+        conn.close()
+    except Exception as err:
+        print(f"Error! Program is not working as expected! {err}")
+        
 def truncateTable(tableName):
 
     conn = getConnection()
