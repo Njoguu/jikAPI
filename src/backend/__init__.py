@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 import os
+import src.backend.database as dbcons
 
 def create_app(test_config=None):
 
@@ -24,12 +25,24 @@ def create_app(test_config=None):
     def homepage():
         return render_template('index.html')
 
-    @app.route('/api/v1/')
-    def versions():
-        return render_template('versions.html')
-
-    @app.route('/api/v1/jobs')
+    @app.route('/api/v2/jobs')
     def available_jobs():
-        pass
+        try:
+            cur = dbcons.getConnection().cursor()
+            getSQL = f'''
+                SELECT id, jobname, joburl, dayofjobpost  FROM availablejobs             
+            '''
+            cur.execute(getSQL)
+            
+            data = cur.fetchall()
+            cur.close()
+            dbcons.getConnection().close()
+
+        except Exception as err:
+            pass    
+
+        
+
+        return data
 
     return app
