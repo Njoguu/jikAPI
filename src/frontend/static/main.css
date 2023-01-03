@@ -10,9 +10,17 @@
 
 /* Hero section */
 #hero{
+    height: 90vh;
+    margin: 5px;
+}
+
+/* Carousel custom */
+.carousel{
     height: 80vh;
-    background-color: aqua;
-    margin-top: 25px;
+}
+.carouselimg{
+    height: 90vh;
+
 }
 
 /* details section */
