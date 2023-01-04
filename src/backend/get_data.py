@@ -2,7 +2,6 @@
 from bs4 import BeautifulSoup 
 import requests
 import database
-import os
 
 # Get Data from scraper
 def get_data(tableName):

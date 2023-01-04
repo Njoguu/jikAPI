@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import os
 import src.backend.database as dbcons
 
@@ -8,7 +8,7 @@ def create_app(test_config=None):
     static_dir = os.getcwd() + '/src/frontend/static'
     
     app = Flask(__name__, instance_relative_config=True, template_folder=template_dir, static_folder=static_dir)    
-
+    keyword = ""
 
 
     if test_config is None:
@@ -25,24 +25,25 @@ def create_app(test_config=None):
     def homepage():
         return render_template('index.html')
 
-    @app.route('/api/v2/jobs')
+    @app.route('/api/v2/jobs', methods=['GET'])
     def available_jobs():
-        try:
-            cur = dbcons.getConnection().cursor()
-            getSQL = f'''
-                SELECT id, jobname, joburl, dayofjobpost  FROM availablejobs             
-            '''
-            cur.execute(getSQL)
-            
-            data = cur.fetchall()
-            cur.close()
-            dbcons.getConnection().close()
-
-        except Exception as err:
-            pass    
-
+        return dbcons.getData(tableName=os.environ.get('TABLENAME'))
         
+    # Using Query parameters
+    # @app.route('/api/v2/jobs/keyword', methods = ['POST'])
+    # def specific_jobs():
+    #     jobname = request.args.get('jobname', type=str)
+    #     pass
 
-        return data
+    
+    @app.route('/api/v2/jobs/keyword', methods = ['POST'])
+    def specific_jobs():
+        reqJSON = request.get_json()
+
+        global keyword
+        keyword = reqJSON['keyword']
+
+        return dbcons.get_specific_job(tableName=os.environ.get('TABLENAME'))
 
     return app
+    
