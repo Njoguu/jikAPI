@@ -1,10 +1,13 @@
 # Import modules
 from bs4 import BeautifulSoup 
 import requests
-import database
+import src.backend.database as database
+import os
 
 # Get Data from scraper
-def get_data(tableName):
+def get_data():
+
+    tableName = os.environ.get('TABLENAME')
     
     database.truncateTable(tableName)
 
@@ -43,6 +46,4 @@ def get_data(tableName):
             job.append(dayOfJobPost)
 
             database.insertData(job, tableName)
-
-get_data('public.availablejobs')
         

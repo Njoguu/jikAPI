@@ -1,11 +1,17 @@
 from flask import Flask, render_template, request
 import os
 import src.backend.database as dbcons
+from src.backend.get_data import get_data as scraper
+from apscheduler.schedulers.background import BackgroundScheduler
 
 def create_app(test_config=None):
 
     template_dir = os.getcwd() + '/src/frontend/templates'
     static_dir = os.getcwd() + '/src/frontend/static'
+
+    scheduler = BackgroundScheduler(daemon=True)
+    scheduler.add_job(id='Scheduled Task', func=scraper, trigger='interval', minutes=60)
+    scheduler.start()
     
     app = Flask(__name__, instance_relative_config=True, template_folder=template_dir, static_folder=static_dir)    
     keyword = ""
