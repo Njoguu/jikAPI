@@ -36,11 +36,14 @@ def create_app(test_config=None):
         return dbcons.getData(tableName=os.environ.get('TABLENAME'))
         
     # Using Query parameters
-    # @app.route('/api/v2/jobs/keyword', methods = ['POST'])
-    # def specific_jobs():
-    #     jobname = request.args.get('jobname', type=str)
-    #     pass
+    @app.route('/api/v2/jobs/keyword')
+    def qspecific_jobs():
+        
+        global keyword
+        keyword = request.args.get('jobname', type=str)
 
+        return dbcons.get_specific_job(tableName=os.environ.get('TABLENAME'))
+        
     
     @app.route('/api/v2/jobs/keyword', methods = ['POST'])
     def specific_jobs():
