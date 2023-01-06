@@ -10,7 +10,7 @@ def create_app(test_config=None):
     static_dir = os.getcwd() + '/src/frontend/static'
 
     scheduler = BackgroundScheduler(daemon=True)
-    scheduler.add_job(id='Scheduled Task', func=scraper, trigger='interval', minutes=60)
+    scheduler.add_job(id='Scheduled Task', func=scraper, trigger='cron', day_of_week='mon-sun', hour='*')
     scheduler.start()
     
     app = Flask(__name__, instance_relative_config=True, template_folder=template_dir, static_folder=static_dir)    
