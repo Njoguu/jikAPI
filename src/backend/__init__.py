@@ -15,6 +15,7 @@ def create_app(test_config=None):
     
     app = Flask(__name__, instance_relative_config=True, template_folder=template_dir, static_folder=static_dir)    
     keyword = ""
+    specified_date = "" 
 
 
     if test_config is None:
@@ -60,6 +61,15 @@ def create_app(test_config=None):
         keyword = reqJSON['keyword']
 
         return dbcons.get_specific_job(tableName=os.environ.get('TABLENAME'))
+
+    @app.route('/api/v2/jobs', methods=['POST'])
+    def date_specified():
+        reqJSON = request.get_json()
+
+        global specified_date
+        specified_date = reqJSON['specified_date']
+
+        return dbcons.get_job_of_specific_date(tableName=os.environ.get('TABLENAME'))
 
     return app
     

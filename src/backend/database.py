@@ -46,7 +46,7 @@ def getData(tableName):
 
     getSQL = f'''
         SELECT array_to_json(array_agg(row_to_json(posted_jobs)))
-        FROM (SELECT id, jobname, joburl, TO_DATE(dayofjobpost || TO_CHAR(CURRENT_DATE, 'YYYY'), 'DD MONTH YYYY') AS dateofjobpost FROM {tableName}) posted_jobs            
+        FROM (SELECT id, jobname, joburl, TO_DATE(dayofjobpost || TO_CHAR(CURRENT_DATE, 'YYYY'), 'DD MONTH YYYY') AS dateofjobpost FROM {tableName} ORDER BY dateofjobpost DESC) posted_jobs            
     '''
 
     try:
@@ -64,7 +64,7 @@ def get_specific_job(tableName):
 
     getSpecificSQL = f'''
     SELECT array_to_json(array_agg(row_to_json(posted_jobs)))
-    FROM (SELECT id, jobname, joburl, TO_DATE(dayofjobpost || TO_CHAR(CURRENT_DATE, 'YYYY'), 'DD MONTH YYYY') AS dateofjobpost FROM {tableName}) posted_jobs
+    FROM (SELECT id, jobname, joburl, TO_DATE(dayofjobpost || TO_CHAR(CURRENT_DATE, 'YYYY'), 'DD MONTH YYYY') AS dateofjobpost FROM {tableName} ORDER BY dateofjobpost DESC) posted_jobs
     WHERE jobname LIKE '%{dbcons.keyword}%'
     '''
     
@@ -76,8 +76,28 @@ def get_specific_job(tableName):
         return data
     except Exception as err:
         print(f"Error! Program is not working as expected! {err}")
+
+def get_job_of_specific_date(tableName):
+    conn = getConnection()
+    cur = conn.cursor()
+
+    getSpecificDateSQL = f'''
+    SELECT array_to_json(array_agg(row_to_json(posted_jobs)))
+    FROM (SELECT id, jobname, joburl, TO_DATE(dayofjobpost || TO_CHAR(CURRENT_DATE, 'YYYY'), 'DD MONTH YYYY') AS dateofjobpost FROM {tableName} ORDER BY dateofjobpost DESC) posted_jobs
+    WHERE dateofjobpost = '{dbcons.specified_date}'
     
-        
+    '''
+
+    try:
+        cur.execute(getSpecificDateSQL)
+        data = cur.fetchall()
+        conn.commit()
+        conn.close()
+        return data
+    except Exception as err:
+        print(f"Error! Program is not working as expected! {err}")
+
+
 def truncateTable(tableName):
 
     conn = getConnection()
