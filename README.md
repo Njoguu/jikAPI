@@ -6,9 +6,10 @@
 jik-api Data Scraper is the easiest way to get access to the latest job opportunities in Kenya, link to the job posting/application page, date posted and returns this data in JSON format.
 
 ### Features
-- GET Search Results
-- GET Job Descriptions
-- GET Job Posting Link
+- GET All Job Postings with the link to application page, the date posted, and its description 
+- GET Jobs with specific keywords
+- GET Jobs posted on a specific date
+- Use Query Parameters to get specific jobs
 
 ## Development:
 ### Setup & Installtion
