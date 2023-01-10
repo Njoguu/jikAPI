@@ -27,9 +27,16 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
 
-    @app.route('/')
-    def homepage():
-        return render_template('index.html')
+    # @app.route('/', methods=["GET", "POST"])
+    # def homepage():
+    #     # if user submits the form
+    #     if request.method == "POST":
+    #         email = request.form.get('email')
+
+    #         dbcons.subscribe_user(email=email, user_group_email="", api_key="")
+
+
+    #     return render_template('index.html')
 
     @app.route('/api/v2/jobs', methods=['GET'])
     def available_jobs():

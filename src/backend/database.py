@@ -46,7 +46,7 @@ def getData(tableName):
 
     getSQL = f'''
         SELECT array_to_json(array_agg(row_to_json(posted_jobs)))
-        FROM (SELECT id, jobname, joburl, dayofjobpost FROM {tableName}) posted_jobs            
+        FROM (SELECT id, jobname, joburl, TO_DATE(dayofjobpost || TO_CHAR(CURRENT_DATE, 'YYYY'), 'DD MONTH YYYY') AS dateofjobpost FROM {tableName}) posted_jobs            
     '''
 
     try:
@@ -64,7 +64,7 @@ def get_specific_job(tableName):
 
     getSpecificSQL = f'''
     SELECT array_to_json(array_agg(row_to_json(posted_jobs)))
-    FROM (SELECT id, jobname, joburl, dayofjobpost FROM {tableName}) posted_jobs
+    FROM (SELECT id, jobname, joburl, TO_DATE(dayofjobpost || TO_CHAR(CURRENT_DATE, 'YYYY'), 'DD MONTH YYYY') AS dateofjobpost FROM {tableName}) posted_jobs
     WHERE jobname LIKE '%{dbcons.keyword}%'
     '''
     
@@ -91,4 +91,10 @@ def truncateTable(tableName):
     conn.commit()
     cur.close()
     conn.close()
-    
+
+# def subscribe_user(email, user_group_email, api_key):
+
+#         res = requests.post(f"https://api.mailgun.net/v3/lists/{user_group_email}/members",
+#             auth=("api", api_key), data={"subscribed": True, "address": email})
+
+#         return res
