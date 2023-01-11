@@ -132,14 +132,14 @@
                             <div class="col-md-4">
                                 <h4>Subscribe to the newsletter</h4>
                                 <p>Get news and updates on the API!</p>
-                                <div class="form-group">
+                                <form class="form-group" method="POST" action="{{ url_for('subscribe') }}">
                                     <div class="input-group">
-                                        <input type="text" class="form-control footer-input-text">
+                                        <input type="email" name="email" placeholder="Enter your email address" class="form-control footer-input-text">
                                         <div class="input-group-btn">
-                                            <button type="button" class="btn btn-primary btn-newsletter ">OK</button>
+                                            <input type="submit" value="Subscribe" class="btn btn-primary btn-newsletter">
                                         </div>
                                     </div>
-                                </div>
+                                </form>
         
         
                             </div>

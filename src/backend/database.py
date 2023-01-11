@@ -45,8 +45,8 @@ def getData(tableName):
     cur = conn.cursor()
 
     getSQL = f'''
-        SELECT array_to_json(array_agg(row_to_json(posted_jobs)))
-        FROM (SELECT id, jobname, joburl, TO_DATE(dayofjobpost || TO_CHAR(CURRENT_DATE, 'YYYY'), 'DD MONTH YYYY') AS dateofjobpost FROM {tableName} ORDER BY dateofjobpost DESC) posted_jobs            
+        SELECT array_to_json(array_agg(row_to_json(postedjobs)))
+        FROM (SELECT id, jobname, joburl, TO_DATE(dayofjobpost || TO_CHAR(CURRENT_DATE, 'YYYY'), 'DD MONTH YYYY') AS dateofjobpost FROM {tableName} ORDER BY dateofjobpost DESC) postedjobs            
     '''
 
     try:
@@ -63,8 +63,8 @@ def get_specific_job(tableName):
     cur = conn.cursor()
 
     getSpecificSQL = f'''
-    SELECT array_to_json(array_agg(row_to_json(posted_jobs)))
-    FROM (SELECT id, jobname, joburl, TO_DATE(dayofjobpost || TO_CHAR(CURRENT_DATE, 'YYYY'), 'DD MONTH YYYY') AS dateofjobpost FROM {tableName} ORDER BY dateofjobpost DESC) posted_jobs
+    SELECT array_to_json(array_agg(row_to_json(postedjobs)))
+    FROM (SELECT id, jobname, joburl, TO_DATE(dayofjobpost || TO_CHAR(CURRENT_DATE, 'YYYY'), 'DD MONTH YYYY') AS dateofjobpost FROM {tableName} ORDER BY dateofjobpost DESC) postedjobs
     WHERE jobname LIKE '%{dbcons.keyword}%'
     '''
     
@@ -82,8 +82,8 @@ def get_job_of_specific_date(tableName):
     cur = conn.cursor()
 
     getSpecificDateSQL = f'''
-    SELECT array_to_json(array_agg(row_to_json(posted_jobs)))
-    FROM (SELECT id, jobname, joburl, TO_DATE(dayofjobpost || TO_CHAR(CURRENT_DATE, 'YYYY'), 'DD MONTH YYYY') AS dateofjobpost FROM {tableName} ORDER BY dateofjobpost DESC) posted_jobs
+    SELECT array_to_json(array_agg(row_to_json(postedjobs)))
+    FROM (SELECT id, jobname, joburl, TO_DATE(dayofjobpost || TO_CHAR(CURRENT_DATE, 'YYYY'), 'DD MONTH YYYY') AS dateofjobpost FROM {tableName} ORDER BY dateofjobpost DESC) postedjobs
     WHERE dateofjobpost = '{dbcons.specified_date}'
     
     '''

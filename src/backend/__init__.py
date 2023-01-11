@@ -1,8 +1,10 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 import os
 import src.backend.database as dbcons
 from src.backend.get_data import get_data as scraper
 from apscheduler.schedulers.background import BackgroundScheduler
+from mailchimp_marketing import Client
+from mailchimp_marketing.api_client import ApiClientError
 
 def create_app(test_config=None):
 
@@ -11,7 +13,13 @@ def create_app(test_config=None):
 
     scheduler = BackgroundScheduler(daemon=True)
     scheduler.add_job(id='Scheduled Task', func=scraper, trigger='cron', day_of_week='mon-sun', hour='*')
-    scheduler.start()
+    scheduler.start()   
+
+    mailchimp = Client()
+    mailchimp.set_config({
+        'api_key': os.environ.get('MAILCHIMP_API_KEY'),
+        'server': os.environ.get('MAILCHIMP_REGION'),
+    })
     
     app = Flask(__name__, instance_relative_config=True, template_folder=template_dir, static_folder=static_dir)    
     keyword = ""
@@ -28,16 +36,10 @@ def create_app(test_config=None):
     else:
         app.config.from_mapping(test_config)
 
-    # @app.route('/', methods=["GET", "POST"])
-    # def homepage():
-    #     # if user submits the form
-    #     if request.method == "POST":
-    #         email = request.form.get('email')
-
-    #         dbcons.subscribe_user(email=email, user_group_email="", api_key="")
-
-
-    #     return render_template('index.html')
+    @app.route('/')
+    def homepage():
+        
+        return render_template('index.html')
 
     @app.route('/api/v2/jobs', methods=['GET'])
     def available_jobs():
@@ -70,6 +72,34 @@ def create_app(test_config=None):
         specified_date = reqJSON['specified_date']
 
         return dbcons.get_job_of_specific_date(tableName=os.environ.get('TABLENAME'))
+
+    @app.route('/subscribe', methods=['POST'])
+    def subscribe():
+        # add the email address to your mailing list here
+        if request.method == 'POST':
+            try:
+                email = request.form['email']
+                member_info = {
+                    'email_address': email,
+                    'status': 'subscribed',
+                }
+                response = mailchimp.lists.add_list_member(
+                    os.environ.get('MAILCHIMP_MARKETING_AUDIENCE_ID'),
+                    member_info,
+                )
+                return 'Thanks for subscribing!'
+
+            except ApiClientError as error:
+                return 'Subscriber Error!'
+
+        return 'Thanks for subscribing!'
+
+    # TODO --> SEND PING TO TESTS
+    @app.route('/ping')
+    def mailchimp_ping_view():
+        response = mailchimp.ping.get()
+        return jsonify(response)
+
 
     return app
     
