@@ -6,7 +6,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from mailchimp_marketing import Client
 from mailchimp_marketing.api_client import ApiClientError
 import logging
-# import hashlib
+import hashlib
 import json
 
 def create_app(test_config=None):
@@ -101,26 +101,32 @@ def create_app(test_config=None):
                 json_data = json.loads(data)
                 return render_template('message.html', json_data=json_data)
 
-    # @app.route('/api/v2/newsletter/unsubscribe', methods=['POST'])
-    # def unsubscribe():
-    #     if request.method == 'POST':
-    #         try:
-    #             form_email = request.form['email']
-    #             form_email_hash = hashlib.md5(form_email.encode('utf-8').lower()).hexdigest()
-    #             member_update = {
-    #                 'status': 'unsubscribed',
-    #             }
-    #             response = mailchimp.lists.update_list_member(
-    #                 os.environ.get('MAILCHIMP_MARKETING_AUDIENCE_ID'),
-    #                 form_email_hash,
-    #                 member_update,
-    #             )
-    #             logger.info(f'API call successful: {response}')
-    #             return jsonify({"message" : "Success! Unsubscription Successful!"})
+    @app.route('/api/v2/newsletter/unsubscribe', methods=['GET','POST'])
+    def unsubscribe():
+        if request.method == 'POST':
+            try:
+                email = request.form['email']
+                form_email_hash = hashlib.md5(email.encode('utf-8').lower()).hexdigest()
+                member_update = {
+                    'status': 'unsubscribed',
+                }
+                response = mailchimp.lists.update_list_member(
+                    os.environ.get('MAILCHIMP_MARKETING_AUDIENCE_ID'),
+                    form_email_hash,
+                    member_update,
+                )
+                logger.info(f'API call successful: {response}')
+                data = '{"title": "Successfully unsubscribed!","message": "You have been successfully unsubscribed from our mailing list."}'
+                json_data = json.loads(data)
+                return render_template('message.html', json_data=json_data)
 
-    #         except ApiClientError as error:
-    #             logger.error(f'An exception occurred: {error.text}')
-    #             return jsonify({"message" : "Error! Unsubscription Failed!"})
+            except ApiClientError as error:
+                logger.error(f'An exception occurred: {error.text}')
+                data = data = '{"title": "Failed to unsubscribe!","message": "Oops, something went wrong."}'
+                json_data = json.loads(data)
+                return render_template('message.html', json_data=json_data)
+
+        return render_template('unsubscribe.html')
 
     # TODO --> SEND PING TO TESTS
     @app.route('/ping')
