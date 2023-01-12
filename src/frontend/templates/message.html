@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %} jik-api {% endblock %}
+
+{% block content %}
+    <body>
+        <div class="container mt-5">
+            
+            <h1> {{ json_data.title }} </h1>
+            <p> {{ json_data.message }} </p>
+        </div>
+    </body>
+
+{% endblock %}
