@@ -19,17 +19,18 @@ Make sure you have the latest version of Python installed.
 ```bash
 git clone https://github.com/Njoguu/jik-api-v2.0-Alpha.git
 ```
-Navigate to the folder structure then
 
-```bash
-pip install -r requirements.txt
+### Viewing The App
+Navigate to the folder structure then build the container with the command 
+```bash 
+docker build -t jikapi .
 ```
 
-### Running The App
-
-```bash
-flask run
+Run the container with the command 
+```bash 
+docker run -d -p 5000:5000 jikapi
 ```
+
 
 ### To view the app
 
