@@ -11,7 +11,7 @@
 /* Hero section */
 #hero{
     height: 90vh;
-    margin: 5px;
+    /* margin: 5px; */
 }
 
 /* Carousel custom */
@@ -29,11 +29,13 @@
     height: 100vh;
 }
 
-/* misc section */
-/* #misc{
-    height: 100vh;
-} */
-
+/* custom styling */
+.col-md-12{
+    padding-top: 40px;
+}
+.col-md-4{
+    padding-top: 40px;
+}
 
 /* other */
 .row{
