@@ -14,23 +14,24 @@ jik-api Data Scraper is the easiest way to get access to the latest job opportun
 ## Development:
 ### Setup & Installtion
 
-Make sure you have the latest version of Python installed.
+Clone the repository using the following command.
 
 ```bash
 git clone https://github.com/Njoguu/jik-api-v2.0-Alpha.git
 ```
 
-### Viewing The App
-Navigate to the folder structure then build the container with the command 
+### Viewing The App: with Docker
+1. Make sure you have docker installed.
+
+2. Navigate to the folder structure then build the container with the command 
 ```bash 
-docker build -t jikapi .
+docker build -t <your-image-name> .
 ```
 
-Run the container with the command 
+3. Run the container with the command 
 ```bash 
-docker run -d -p 5000:5000 jikapi
+docker run -d -p 5000:5000 <your-image-name>
 ```
-
 
 ### To view the app
 
