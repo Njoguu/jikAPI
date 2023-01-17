@@ -8,6 +8,8 @@ from mailchimp_marketing.api_client import ApiClientError
 import logging
 import hashlib
 import json
+from flasgger import Swagger, swag_from
+from src.backend.config.swagger import swagger_config,template
 
 def create_app(test_config=None):
 
@@ -38,15 +40,24 @@ def create_app(test_config=None):
             SQLALCHEMY_DATABASE_URI=os.environ.get("SQLALCHEMY_DB_URI"),
             SQLALCHEMY_TRACK_MODIFICATIONS=False
         )
+        SWAGGER = {
+                "title" : "jikAPI",
+                "uiversion" : 3,
+        }
+
     else:
         app.config.from_mapping(test_config)
+
+    Swagger(app, config=swagger_config, template=template)
 
     @app.route('/')
     def homepage():
         
         return render_template('index.html')
 
+
     @app.route('/api/v2/jobs', methods=['GET'])
+    @swag_from('./docs/postings/jobs.yaml')
     def available_jobs():
         return dbcons.getData(tableName=os.environ.get('TABLENAME'))
         
@@ -61,6 +72,7 @@ def create_app(test_config=None):
         
     
     @app.route('/api/v2/jobs/keyword', methods = ['POST'])
+    @swag_from('./docs/postings/use_keyword.yaml')
     def specific_jobs():
         reqJSON = request.get_json()
 
@@ -70,6 +82,7 @@ def create_app(test_config=None):
         return dbcons.get_specific_job(tableName=os.environ.get('TABLENAME'))
 
     @app.route('/api/v2/jobs', methods=['POST'])
+    @swag_from('./docs/postings/use_date.yaml')
     def date_specified():
         reqJSON = request.get_json()
 
