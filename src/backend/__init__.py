@@ -59,7 +59,9 @@ def create_app(test_config=None):
     @app.route('/api/v2/jobs', methods=['GET'])
     @swag_from('./docs/postings/jobs.yaml')
     def available_jobs():
-        return dbcons.getData(tableName=os.environ.get('TABLENAME'))
+        data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
+        jobs = data[0][0]
+        return jsonify(jobs)
         
     # Using Query parameters
     # /api/v2/jobs/keyword?jobname=Software+Developer
@@ -69,7 +71,9 @@ def create_app(test_config=None):
         global keyword
         keyword = request.args.get('jobname', '', type=str)
 
-        return dbcons.get_specific_job(tableName=os.environ.get('TABLENAME'))
+        data = dbcons.get_specific_job(tableName=os.environ.get('TABLENAME'))
+        jobs = data[0][0]
+        return jsonify(jobs)
         
     
     @app.route('/api/v2/jobs/keyword', methods = ['POST'])
@@ -80,7 +84,9 @@ def create_app(test_config=None):
         global keyword
         keyword = reqJSON['keyword']
 
-        return dbcons.get_specific_job(tableName=os.environ.get('TABLENAME'))
+        data = dbcons.get_specific_job(tableName=os.environ.get('TABLENAME'))
+        jobs = data[0][0]
+        return jsonify(jobs)
 
     @app.route('/api/v2/jobs', methods=['POST'])
     @swag_from('./docs/postings/use_date.yaml')
@@ -90,7 +96,9 @@ def create_app(test_config=None):
         global specified_date
         specified_date = reqJSON['specified_date']
 
-        return dbcons.get_job_of_specific_date(tableName=os.environ.get('TABLENAME'))
+        data = dbcons.get_job_of_specific_date(tableName=os.environ.get('TABLENAME'))
+        jobs = data[0][0]
+        return jsonify(jobs)
 
     @app.route('/api/v2/newsletter/subscribe', methods=['POST'])
     def subscribe():
