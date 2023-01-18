@@ -62,11 +62,12 @@ def create_app(test_config=None):
         return dbcons.getData(tableName=os.environ.get('TABLENAME'))
         
     # Using Query parameters
+    # /api/v2/jobs/keyword?jobname=Software+Developer
     @app.route('/api/v2/jobs/keyword')
     def qspecific_jobs():
         
         global keyword
-        keyword = request.args.get('jobname', type=str)
+        keyword = request.args.get('jobname', '', type=str)
 
         return dbcons.get_specific_job(tableName=os.environ.get('TABLENAME'))
         
@@ -142,7 +143,7 @@ def create_app(test_config=None):
         return render_template('unsubscribe.html')
 
     # TODO --> SEND PING TO TESTS
-    @app.route('/ping')
+    @app.route('/api/mailchimp/ping')
     def mailchimp_ping_view():
         response = mailchimp.ping.get()
         return jsonify(response)
