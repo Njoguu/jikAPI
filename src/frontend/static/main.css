@@ -22,6 +22,10 @@
     height: 90vh;
 
 }
+#homeIcon{
+    height: 110px;
+    width: 110px;
+}
 
 /* details section */
 #details{
