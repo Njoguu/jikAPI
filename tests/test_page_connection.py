@@ -16,10 +16,10 @@ class PageConnectionTestCases(unittest.TestCase):
         self.assertEqual(response, 200)
 
     # Check connection to versions page
-    def test_versions_page(self):
+    def test_api_page(self):
         app = create_app()
         tester = app.test_client(self)   # type: ignore
-        response = tester.get('/api/v1/').status_code
+        response = tester.get('/api/v2/').status_code
         self.assertEqual(response, 200)
 
     # Check connection to api page
