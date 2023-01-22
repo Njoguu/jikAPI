@@ -16,9 +16,12 @@ def create_app(test_config=None):
     template_dir = os.getcwd() + '/src/frontend/templates'
     static_dir = os.getcwd() + '/src/frontend/static'
 
-    scheduler = BackgroundScheduler(daemon=True)
-    scheduler.add_job(id='Scheduled Task', func=scraper, trigger='cron', day_of_week='mon-sun', hour='*')
-    scheduler.start()   
+    scheduler_started = False
+    if not scheduler_started:
+        scheduler = BackgroundScheduler(daemon=True)
+        scheduler.add_job(id='Scheduled Task', func=scraper, trigger='cron', day_of_week='mon-sun', hour='*')
+        scheduler.start()   
+        scheduler_started = True
 
     mailchimp = Client()
     mailchimp.set_config({

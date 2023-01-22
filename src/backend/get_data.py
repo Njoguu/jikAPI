@@ -10,6 +10,7 @@ def get_data():
     tableName = os.environ.get('TABLENAME')
     
     database.truncateTable(tableName)
+    print("********** STARTING DATA COLLECTION **********")
 
     pages = 10
     for page in range(pages):
@@ -25,11 +26,7 @@ def get_data():
         # Clean Raw Content
         def clean_content(raw_links):	
         # return clean links
-            links = []
-            for link in raw_links:
-                lnk = link.a.get('href').replace('&utm_source=KenyaMOJA.com', '')
-                clean_links = lnk[lnk.find('https'):]
-                links.append(clean_links)
+            links = [link.a.get('href').replace('&utm_source=KenyaMOJA.com', '')[link.find('https'):] for link in raw_links]
 
             return links
     
@@ -46,4 +43,6 @@ def get_data():
             job.append(dayOfJobPost)
 
             database.insertData(job, tableName)
-        
+
+    print("********** DATA COLLECTION COMPLETE **********")
+    

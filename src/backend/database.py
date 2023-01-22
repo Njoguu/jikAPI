@@ -1,7 +1,7 @@
 # Import Modules
 import psycopg2
 import configparser
-import src.backend as dbcons
+import src.backend as glbls
 
 def getConnection():
     config = configparser.ConfigParser()
@@ -65,7 +65,7 @@ def get_specific_job(tableName):
     getSpecificSQL = f'''
     SELECT array_to_json(array_agg(row_to_json(postedjobs)))
     FROM (SELECT id, jobname, joburl, TO_DATE(dayofjobpost || TO_CHAR(CURRENT_DATE, 'YYYY'), 'DD MONTH YYYY') AS dateofjobpost FROM {tableName} ORDER BY dateofjobpost DESC) postedjobs
-    WHERE jobname LIKE '%{dbcons.keyword}%'
+    WHERE jobname LIKE '%{glbls.keyword}%'
     '''
     
     try:
@@ -84,7 +84,7 @@ def get_job_of_specific_date(tableName):
     getSpecificDateSQL = f'''
     SELECT array_to_json(array_agg(row_to_json(postedjobs)))
     FROM (SELECT id, jobname, joburl, TO_DATE(dayofjobpost || TO_CHAR(CURRENT_DATE, 'YYYY'), 'DD MONTH YYYY') AS dateofjobpost FROM {tableName} ORDER BY dateofjobpost DESC) postedjobs
-    WHERE dateofjobpost = '{dbcons.specified_date}'
+    WHERE dateofjobpost = '{glbls.specified_date}'
     
     '''
 
