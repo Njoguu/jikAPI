@@ -4,9 +4,9 @@
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 
 /* navbar */
-#nav{
+/* #nav{
     height: 80px;
-}
+} */
 
 /* Hero section */
 #hero{
@@ -34,8 +34,8 @@ span.badge {
 
 }
 #homeIcon{
-    height: 110px;
-    width: 110px;
+    height: 80px;
+    width: 80px;
 }
 
 /* details section */
@@ -753,3 +753,35 @@ span.badge {
     text-align:center;
     color:#0c0633
 }
+
+/* styles for screens with a width less than 600px */
+@media (max-width: 600px) {
+    #misc{
+        margin-top: 250px;
+    }
+}
+
+/* styles for screens with a width between 600px and 1200px */
+@media (min-width: 600px) and (max-width: 1200px) {
+    #details .section-container-spacer {
+        padding: 40px; /* adjust the padding of the section container */
+        
+    }
+    #misc{
+        margin-top: 610px;
+    }
+}
+
+
+/* styles for screens with a width greater than 1200px */
+/* @media (min-width: 1200px) {
+    #carouselExampleAutoplaying .carousel-inner .carouselimg {
+        max-height: 300px; 
+    }
+    #details .section-container-spacer {
+        padding: 60px; 
+    }
+    #details .fa-container {
+        font-size: 3em; 
+    }
+} */
