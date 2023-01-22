@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import os
 import src.backend.database as dbcons
 from src.backend.get_data import get_data as scraper
-from apscheduler.schedulers.background import BackgroundScheduler
+# from apscheduler.schedulers.background import BackgroundScheduler
 from mailchimp_marketing import Client
 from mailchimp_marketing.api_client import ApiClientError
 import logging
@@ -16,12 +16,12 @@ def create_app(test_config=None):
     template_dir = os.getcwd() + '/src/frontend/templates'
     static_dir = os.getcwd() + '/src/frontend/static'
 
-    scheduler_started = False
-    if not scheduler_started:
-        scheduler = BackgroundScheduler(daemon=True)
-        scheduler.add_job(id='Scheduled Task', func=scraper, trigger='cron', day_of_week='mon-sun', hour='*')
-        scheduler.start()   
-        scheduler_started = True
+    # scheduler_started = False
+    # if not scheduler_started:
+    #     scheduler = BackgroundScheduler(daemon=True)
+    #     scheduler.add_job(id='Scheduled Task', func=scraper, trigger='cron', day_of_week='mon-sun', hour='*')
+    #     scheduler.start()   
+    #     scheduler_started = True
 
     mailchimp = Client()
     mailchimp.set_config({
@@ -59,49 +59,49 @@ def create_app(test_config=None):
         return render_template('index.html')
 
 
-    @app.route('/api/v2/jobs', methods=['GET'])
-    @swag_from('./docs/postings/jobs.yaml')
-    def available_jobs():
-        data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
-        jobs = data[0][0]
-        return jsonify(jobs)
+    # @app.route('/api/v2/jobs', methods=['GET'])
+    # @swag_from('./docs/postings/jobs.yaml')
+    # def available_jobs():
+    #     data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
+    #     jobs = data[0][0]
+    #     return jsonify(jobs)
         
-    # Using Query parameters
-    # /api/v2/jobs/keyword?jobname=Software+Developer
-    @app.route('/api/v2/jobs/keyword')
-    def qspecific_jobs():
+    # # Using Query parameters
+    # # /api/v2/jobs/keyword?jobname=Software+Developer
+    # @app.route('/api/v2/jobs/keyword')
+    # def qspecific_jobs():
         
-        global keyword
-        keyword = request.args.get('jobname', '', type=str)
+    #     global keyword
+    #     keyword = request.args.get('jobname', '', type=str)
 
-        data = dbcons.get_specific_job(tableName=os.environ.get('TABLENAME'))
-        jobs = data[0][0]
-        return jsonify(jobs)
+    #     data = dbcons.get_specific_job(tableName=os.environ.get('TABLENAME'))
+    #     jobs = data[0][0]
+    #     return jsonify(jobs)
         
     
-    @app.route('/api/v2/jobs/keyword', methods = ['POST'])
-    @swag_from('./docs/postings/use_keyword.yaml')
-    def specific_jobs():
-        reqJSON = request.get_json()
+    # @app.route('/api/v2/jobs/keyword', methods = ['POST'])
+    # @swag_from('./docs/postings/use_keyword.yaml')
+    # def specific_jobs():
+    #     reqJSON = request.get_json()
 
-        global keyword
-        keyword = reqJSON['keyword']
+    #     global keyword
+    #     keyword = reqJSON['keyword']
 
-        data = dbcons.get_specific_job(tableName=os.environ.get('TABLENAME'))
-        jobs = data[0][0]
-        return jsonify(jobs)
+    #     data = dbcons.get_specific_job(tableName=os.environ.get('TABLENAME'))
+    #     jobs = data[0][0]
+    #     return jsonify(jobs)
 
-    @app.route('/api/v2/jobs', methods=['POST'])
-    @swag_from('./docs/postings/use_date.yaml')
-    def date_specified():
-        reqJSON = request.get_json()
+    # @app.route('/api/v2/jobs', methods=['POST'])
+    # @swag_from('./docs/postings/use_date.yaml')
+    # def date_specified():
+    #     reqJSON = request.get_json()
 
-        global specified_date
-        specified_date = reqJSON['specified_date']
+    #     global specified_date
+    #     specified_date = reqJSON['specified_date']
 
-        data = dbcons.get_job_of_specific_date(tableName=os.environ.get('TABLENAME'))
-        jobs = data[0][0]
-        return jsonify(jobs)
+    #     data = dbcons.get_job_of_specific_date(tableName=os.environ.get('TABLENAME'))
+    #     jobs = data[0][0]
+    #     return jsonify(jobs)
 
     @app.route('/api/v2/newsletter/subscribe', methods=['POST'])
     def subscribe():

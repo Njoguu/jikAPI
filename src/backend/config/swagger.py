@@ -2,10 +2,10 @@ template = {
     "swagger" : "2.0",
     "info" : {
         "title" : "jikAPI",
-        "description" : "Jobs In Kenya Live API returning most recent job openings in Kenya",
+        "description" : "Jobs In Kenya Live API - Your key to unlocking endless job opportunities.",
         "contact" : {
             "name": "API Support",
-            "url": "https://www.twitter.com/@whoisnjoguu",
+            "url": "https://www.twitter.com/@the_jikAPI",
             "email" : "bigboydevelops@gmail.com",
         },
         # "termsOfService" : "www.twitter.com/@whoisnjoguu",

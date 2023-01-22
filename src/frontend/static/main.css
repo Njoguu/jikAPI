@@ -14,6 +14,17 @@
     /* margin: 5px; */
 }
 
+span.badge {
+    margin-right: 10px;
+}
+
+
+.dropdown-menu li {
+    display: flex;
+    align-items: center;
+}
+
+
 /* Carousel custom */
 .carousel{
     height: 80vh;
