@@ -137,7 +137,7 @@
                                 <p>Get news and updates on the API!</p>
                                 <form class="form-group" method="POST" action="{{ url_for('subscribe') }}" id="newsletterForm">
                                     <div class="input-group">
-                                        <input type="email" name="email" placeholder="Enter your email address" class="form-control footer-input-text">
+                                        <input type="email" required name="email" id="formEmail" placeholder="Enter your email address" class="form-control footer-input-text">
                                         <div class="input-group-btn">
                                             <input type="submit" value="Subscribe" class="btn btn-primary btn-newsletter">
                                         </div>
