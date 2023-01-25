@@ -27,10 +27,11 @@ span.badge {
 
 /* Carousel custom */
 .carousel{
-    height: 80vh;
+    height: 100vh;
 }
 .carouselimg{
-    height: 90vh;
+    height: 100vh;
+    width: 100%;
 
 }
 #homeIcon{
