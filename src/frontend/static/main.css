@@ -811,6 +811,14 @@ span.badge {
     }
 } */
 
+@media only screen and (max-width: 768px) {
+    #hero-text {
+        margin-top: 19vh;
+        text-align: left;
+    }
+  }
+  
+  
 @media (min-width:1200px){
     .visible-lg-inline{
         display:inline!important
