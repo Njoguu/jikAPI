@@ -2,16 +2,22 @@
 @import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
 /*! * Bootstrap v3.3.7 (http://getbootstrap.com) * Copyright 2011-2016 Twitter, Inc. * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE) */
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
+html{
+    font-family:sans-serif;
+    -ms-text-size-adjust:100%;
+    -webkit-text-size-adjust:100%
+}
+body{
+    font-size:15px;
+    line-height:1.81;
+    color:#555;
+    background-color:#fff
+}
 
-/* navbar */
-/* #nav{
-    height: 80px;
-} */
 
 /* Hero section */
 #hero{
     height: 90vh;
-    /* margin: 5px; */
 }
 
 span.badge {
@@ -41,8 +47,26 @@ span.badge {
 
 /* details section */
 #details{
-    margin: 80px;
+    margin-top: 40px;
+    margin-bottom: 80px;
     /* height: 100vh; */
+}
+
+.background-image-container{
+    height: 85vh;
+    position:relative;
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-position:top;
+    padding:12% 0
+}
+.opacity{
+    background-color:rgba(0,0,0,.2);
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    top:0
 }
 
 /* custom styling */
@@ -733,7 +757,7 @@ span.badge {
 }
 .white-text-container h1,.white-text-container h2,.white-text-container h3,.white-text-container h4,.white-text-container h5,.white-text-container p{
     color:#fff;
-    text-shadow:0 1px 3px #000
+    /* text-shadow:0 1px 3px #000 */
 }
 
 .fa-icon{
