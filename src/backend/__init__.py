@@ -115,19 +115,22 @@ def create_app(test_config=None):
         if request.method == 'POST':
             try:
                 email = request.form['email']
-                member_info = {
-                    'email_address': email,
+                form_email_hash = hashlib.md5(email.encode('utf-8').lower()).hexdigest()
+                member_update = {
                     'status': 'subscribed',
                 }
-                response = mailchimp.lists.add_list_member(
+                response = mailchimp.lists.set_list_member(
                     os.environ.get('MAILCHIMP_MARKETING_AUDIENCE_ID'),
-                    member_info,
+                    form_email_hash,
+                    member_update,
                 )
+                logger.info(f'API call successful: {response}')
                 data = '{"title": "Successfully subscribed!","message": "You have been successfully subscribed to our mailing list."}'
                 json_data = json.loads(data)
                 return render_template('message.html', json_data=json_data)
 
             except ApiClientError as error:
+                logger.error(f'An exception occurred: {error.text}')
                 data = data = '{"title": "Failed to subscribe!","message": "Oops, something went wrong."}'
                 json_data = json.loads(data)
                 return render_template('message.html', json_data=json_data)
@@ -153,7 +156,7 @@ def create_app(test_config=None):
 
             except ApiClientError as error:
                 logger.error(f'An exception occurred: {error.text}')
-                data = data = '{"title": "Failed to unsubscribe!","message": "Oops, something went wrong."}'
+                data = data = '{"title": "Failed to unsubscribe!","message": "Oops, something went wrong. Could not subscribe you to our mailing list."}'
                 json_data = json.loads(data)
                 return render_template('message.html', json_data=json_data)
 
