@@ -1,7 +1,11 @@
 # Import Modules
 import psycopg2
+import os
+import sys
 import configparser
-import src.backend as glbls
+path = os.getcwd()
+sys.path.append(path+"/src/")
+import backend as glbls
 
 def getConnection():
     config = configparser.ConfigParser()

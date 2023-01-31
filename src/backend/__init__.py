@@ -1,27 +1,21 @@
 from flask import Flask, render_template, request, jsonify
 import os
-import src.backend.database as dbcons
-from src.backend.get_data import get_data as scraper
-# from apscheduler.schedulers.background import BackgroundScheduler
+import sys
+path = os.getcwd()
+sys.path.append(path+"/src/")
+from backend import database as dbcons
 from mailchimp_marketing import Client
 from mailchimp_marketing.api_client import ApiClientError
 import logging
 import hashlib
 import json
 from flasgger import Swagger, swag_from
-from src.backend.config.swagger import swagger_config,template
+from backend.config.swagger import swagger_config,template
 
 def create_app(test_config=None):
 
     template_dir = os.getcwd() + '/src/frontend/templates'
     static_dir = os.getcwd() + '/src/frontend/static'
-
-    # scheduler_started = False
-    # if not scheduler_started:
-    #     scheduler = BackgroundScheduler(daemon=True)
-    #     scheduler.add_job(id='Scheduled Task', func=scraper, trigger='cron', day_of_week='mon-sun', hour='*')
-    #     scheduler.start()   
-    #     scheduler_started = True
 
     mailchimp = Client()
     mailchimp.set_config({
@@ -65,12 +59,12 @@ def create_app(test_config=None):
         return render_template('index.html', tweet_link=tweet_link, linkedin_link=linkedin_link, facebook_link=facebook_link)
 
 
-    # @app.route('/api/v2/jobs', methods=['GET'])
-    # @swag_from('./docs/postings/jobs.yaml')
-    # def available_jobs():
-    #     data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
-    #     jobs = data[0][0]
-    #     return jsonify(jobs)
+    @app.route('/api/v2/jobs', methods=['GET'])
+    @swag_from('./docs/postings/jobs.yaml')
+    def available_jobs():
+        data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
+        jobs = data[0][0]
+        return jsonify(jobs)
         
     # # Using Query parameters
     # # /api/v2/jobs/keyword?jobname=Software+Developer
