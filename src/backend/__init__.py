@@ -59,12 +59,12 @@ def create_app(test_config=None):
         return render_template('index.html', tweet_link=tweet_link, linkedin_link=linkedin_link, facebook_link=facebook_link)
 
 
-    @app.route('/api/v2/jobs', methods=['GET'])
-    @swag_from('./docs/postings/jobs.yaml')
-    def available_jobs():
-        data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
-        jobs = data[0][0]
-        return jsonify(jobs)
+    # @app.route('/api/v2/jobs', methods=['GET'])
+    # @swag_from('./docs/postings/jobs.yaml')
+    # def available_jobs():
+    #     data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
+    #     jobs = data[0][0]
+    #     return jsonify(jobs)
         
     # # Using Query parameters
     # # /api/v2/jobs/keyword?jobname=Software+Developer
