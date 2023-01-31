@@ -26,9 +26,6 @@ def create_app(test_config=None):
     logger = logging.getLogger(__name__)
     
     app = Flask(__name__, instance_relative_config=True, template_folder=template_dir, static_folder=static_dir)    
-    keyword = ""
-    specified_date = "" 
-
 
     if test_config is None:
 
@@ -70,24 +67,19 @@ def create_app(test_config=None):
     # /api/v2/jobs/keyword?jobname=Software+Developer
     @app.route('/api/v2/jobs/keyword')
     def qspecific_jobs():
-        
-        global keyword
         keyword = request.args.get('jobname', '', type=str)
 
-        data = dbcons.get_specific_job(tableName=os.environ.get('TABLENAME'))
+        data = dbcons.get_specific_job(keywords=keyword, tableName=os.environ.get('TABLENAME'))
         jobs = data[0][0]
         return jsonify(jobs)
-        
     
     @app.route('/api/v2/jobs/keyword', methods = ['POST'])
     @swag_from('./docs/postings/use_keyword.yaml')
     def specific_jobs():
         reqJSON = request.get_json()
+        keyword = reqJSON.get("keyword")
 
-        global keyword
-        keyword = reqJSON['keyword']
-
-        data = dbcons.get_specific_job(tableName=os.environ.get('TABLENAME'))
+        data = dbcons.get_specific_job(keywords=keyword, tableName=os.environ.get('TABLENAME'))
         jobs = data[0][0]
         return jsonify(jobs)
 
@@ -95,11 +87,9 @@ def create_app(test_config=None):
     @swag_from('./docs/postings/use_date.yaml')
     def date_specified():
         reqJSON = request.get_json()
-
-        global specified_date
         specified_date = reqJSON['specified_date']
 
-        data = dbcons.get_job_of_specific_date(tableName=os.environ.get('TABLENAME'))
+        data = dbcons.get_job_of_specific_date(specified_dates=specified_date, tableName=os.environ.get('TABLENAME'))
         jobs = data[0][0]
         return jsonify(jobs)
 
