@@ -3,6 +3,7 @@ import psycopg2
 import os
 import sys
 import configparser
+import logging
 path = os.getcwd()
 sys.path.append(path+"/src/")
 import backend as glbls
@@ -31,13 +32,18 @@ def insertData(job, tableName):
     conn = getConnection()
     cur = conn.cursor()
 
-    insertSQL = f'''
-        insert into {tableName}(jobName, jobURL, dayOfJobPost)
-        values('{job[0]}','{job[1]}','{job[2]}')
-    '''
-
     try:
-        cur.execute(insertSQL)
+        ## Check to see if item is already in database 
+        cur.execute(f"select * from {tableName} where jobURL = %s", (job[1],))
+        result = cur.fetchone()
+
+        if result:
+            logging.warning("Posting already exists in Database")
+        else:
+            cur.execute(f'''
+                insert into {tableName}(jobName, jobURL, dayOfJobPost)
+                values('{job[0]}','{job[1]}','{job[2]}')
+            ''')
         conn.commit()
         cur.close()
         conn.close()
