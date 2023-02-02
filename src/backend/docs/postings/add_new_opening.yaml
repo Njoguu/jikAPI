@@ -1,0 +1,30 @@
+Create a new job posting
+---
+tags:
+  - Postings
+
+description: Adds a new job to the database
+summary: Add new postings
+parameters:
+  - in: body
+    name: job
+    schema:
+      type: object
+      properties:
+        jobname:
+          type: string
+          example: "string"
+        joburl:
+          type: string
+          example: "url"
+      required:
+        - jobname
+        - joburl
+        
+responses:
+  200:
+    description: Successfully added the new job to the database
+  400:
+    description: Bad Request
+  500:
+    description: Internal Server Error

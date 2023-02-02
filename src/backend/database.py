@@ -134,3 +134,29 @@ def writeData(jobs, tableName):
         conn.close()
     except Exception as err:
         print(f"Error! Program is not working as expected! {err}")
+
+def addData(job, tableName):
+    conn = getConnection()
+    cur = conn.cursor()
+
+    try:
+        # Clear the existing data in the table
+        cur.execute("DELETE FROM {}".format(tableName))
+
+        current_date = datetime.datetime.today().strftime('%Y-%m-%d')        
+        date = datetime.datetime.strptime(current_date, '%Y-%m-%d')
+        new_format = date.strftime('%d %B')
+
+        cur.execute(f'''
+            insert into {tableName}(jobName, jobURL, dayOfJobPost)
+            values('{job['jobname']}','{job['joburl']}','{new_format}')
+                ''')
+    
+        # Commit the changes to the database
+        conn.commit()
+        
+        # Close the cursor and connection
+        cur.close()
+        conn.close()
+    except Exception as err:
+        print(f"Error! Program is not working as expected! {err}")

@@ -63,6 +63,16 @@ def create_app(test_config=None):
         jobs = data[0][0]
         return jsonify(jobs)
 
+    @app.route('/api/v2/jobs/new', methods=['POST'])
+    @swag_from('./docs/postings/add_new_opening.yaml')
+    def add_new_job():
+        data = request.get_json()
+        jobs = dbcons.getData(tableName=os.environ.get('TABLENAME'))[0][0]
+        # max_id = max([job['id'] for job in jobs])
+        # data['id'] = max_id + 1
+        dbcons.addData(data, tableName=os.environ.get('TABLENAME'))
+        return jsonify({"message": "Job created successfully"}), 201
+
     @app.route('/api/v2/jobs/<int:id>', methods=['GET'])
     @swag_from('./docs/postings/get_job_by_id.yaml')
     def get_by_id(id):
