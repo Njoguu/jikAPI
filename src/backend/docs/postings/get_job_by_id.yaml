@@ -1,0 +1,37 @@
+Find a job posting with a specific ID
+---
+
+tags:
+  - Postings
+
+description: Retrieve a job by ID
+parameters:
+  - in: path
+    name: id
+    description: ID of job to retrieve
+    required: true
+    schema:
+      type: integer
+responses:
+  200:
+    description: Job successfully retrieved
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+          example:
+            id: 1
+  404:
+    description: Job not found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+          example:
+            error: "Job not found"

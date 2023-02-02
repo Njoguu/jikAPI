@@ -62,6 +62,17 @@ def create_app(test_config=None):
         data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
         jobs = data[0][0]
         return jsonify(jobs)
+
+    @app.route('/api/v2/jobs/<int:id>', methods=['GET'])
+    @swag_from('./docs/postings/get_job_by_id.yaml')
+    def get_by_id(id):
+        data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
+        jobs = data[0][0]
+        job = next((job for job in jobs if job['id'] == id), None)
+        if job:
+            return jsonify(job)
+        else:
+            return jsonify({"error": "Job not found"}), 404
         
     # Using Query parameters
     # /api/v2/jobs/keyword?jobname=Software+Developer
