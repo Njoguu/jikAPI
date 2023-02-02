@@ -2,6 +2,7 @@
 import psycopg2
 import configparser
 import logging
+import datetime 
 
 # Function to get a database connection
 def getConnection():
@@ -104,5 +105,32 @@ def get_job_of_specific_date(specified_dates, tableName):
         conn.commit()
         conn.close()
         return data
+    except Exception as err:
+        print(f"Error! Program is not working as expected! {err}")
+
+def writeData(jobs, tableName):
+    conn = getConnection()
+    cur = conn.cursor()
+
+    try:
+        # Clear the existing data in the table
+        cur.execute("DELETE FROM {}".format(tableName))
+        
+        # Insert the updated data into the table
+        for job in jobs:
+            date_str = job['dateofjobpost']
+            date = datetime.datetime.strptime(date_str, '%Y-%m-%d')
+            new_format = date.strftime('%d %B')
+            cur.execute(f'''
+                insert into {tableName}(jobName, jobURL, dayOfJobPost)
+                values('{job['jobname']}','{job['joburl']}','{new_format}')
+                    ''')
+    
+        # Commit the changes to the database
+        conn.commit()
+        
+        # Close the cursor and connection
+        cur.close()
+        conn.close()
     except Exception as err:
         print(f"Error! Program is not working as expected! {err}")
