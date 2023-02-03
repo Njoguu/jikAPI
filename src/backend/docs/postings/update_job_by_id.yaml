@@ -1,0 +1,58 @@
+Update a job posting with a specific ID
+---
+
+tags:
+  - Postings
+
+summary: Update a job by id
+description: Update the information of a job with a specific id
+operationId: updateJobById
+parameters:
+  - in: path
+    name: id
+    description: The id of the job to update
+    required: true
+    schema:
+      type: integer
+  - in: body
+    name: job
+    description: The information to update the job with
+    required: true
+    schema:
+      type: object
+      properties:
+        jobname:
+          type: string
+          example: "string"
+        joburl:
+          type: string
+          example: "url"
+      required:
+        - jobname
+        - joburl
+        
+responses:
+  200:
+    description: Successfully updated the job
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            id:
+              type: integer
+            jobname:
+              type: string
+            joburl:
+              type: string
+            dateofjobpost:
+              type: string
+  404:
+    description: Job not found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string

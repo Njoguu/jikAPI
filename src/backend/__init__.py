@@ -73,6 +73,22 @@ def create_app(test_config=None):
         dbcons.addData(data, tableName=os.environ.get('TABLENAME'))
         return jsonify({"message": "Job created successfully"}), 201
 
+    @app.route('/api/v2/jobs/<int:id>', methods=['PATCH'])
+    @swag_from('./docs/postings/update_job_by_id.yaml')
+    def update_job_by_id(id):
+        data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
+        jobs = data[0][0]
+        job = next((job for job in jobs if job['id'] == id), None)
+        if job:
+            request_data = request.get_json()
+            for key, value in request_data.items():
+                job[key] = value
+            dbcons.writeData(jobs, tableName=os.environ.get('TABLENAME'))
+            return jsonify(job)
+        else:
+            return jsonify({"error": "Job not found"}), 404
+
+
     @app.route('/api/v2/jobs/<int:id>', methods=['GET'])
     @swag_from('./docs/postings/get_job_by_id.yaml')
     def get_by_id(id):
