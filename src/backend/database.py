@@ -108,23 +108,18 @@ def get_job_of_specific_date(specified_dates, tableName):
     except Exception as err:
         print(f"Error! Program is not working as expected! {err}")
 
-def writeData(jobs, tableName):
+# Function to UPDATE data in the database 
+def updateData(jobname, joburl,id, tableName):
     conn = getConnection()
     cur = conn.cursor()
 
-    try:
-        # Clear the existing data in the table
-        cur.execute("DELETE FROM {}".format(tableName))
-        
-        # Insert the updated data into the table
-        for job in jobs:
-            date_str = job['dateofjobpost']
-            date = datetime.datetime.strptime(date_str, '%Y-%m-%d')
-            new_format = date.strftime('%d %B')
-            cur.execute(f'''
-                insert into {tableName}(jobName, jobURL, dayOfJobPost)
-                values('{job['jobname']}','{job['joburl']}','{new_format}')
-                    ''')
+    try:     
+        cur.execute(f'''
+        UPDATE {tableName}
+        SET jobname = %s, joburl = %s
+        WHERE id = %s
+        ''', (jobname, joburl, id)
+    )
     
         # Commit the changes to the database
         conn.commit()
@@ -135,22 +130,51 @@ def writeData(jobs, tableName):
     except Exception as err:
         print(f"Error! Program is not working as expected! {err}")
 
+# Function to POST new data in the database 
 def addData(job, tableName):
     conn = getConnection()
     cur = conn.cursor()
 
     try:
         # Clear the existing data in the table
-        cur.execute("DELETE FROM {}".format(tableName))
+        # cur.execute("DELETE FROM {}".format(tableName))
 
         current_date = datetime.datetime.today().strftime('%Y-%m-%d')        
         date = datetime.datetime.strptime(current_date, '%Y-%m-%d')
         new_format = date.strftime('%d %B')
 
+        # Check to see if item is already in database 
+        cur.execute(f"select * from {tableName} where joburl = %s", (job['joburl'],))
+        result = cur.fetchone()
+
+        if result:
+            logging.warning("Posting already exists in Database")
+        else:
+            cur.execute(f'''
+                insert into {tableName}(jobname, joburl, dayofjobpost)
+                values('{job['jobname']}','{job['joburl']}','{new_format}')
+            ''')
+    
+        # Commit the changes to the database
+        conn.commit()
+        
+        # Close the cursor and connection
+        cur.close()
+        conn.close()
+    except Exception as err:
+        print(f"Error! Program is not working as expected! {err}")
+
+# Function to DELETE data from the database 
+def deleteData(id, tableName):
+    conn = getConnection()
+    cur = conn.cursor()
+
+    try:     
         cur.execute(f'''
-            insert into {tableName}(jobName, jobURL, dayOfJobPost)
-            values('{job['jobname']}','{job['joburl']}','{new_format}')
-                ''')
+        DELETE FROM {tableName}
+        WHERE id = %s
+        ''', ([id])
+    )
     
         # Commit the changes to the database
         conn.commit()

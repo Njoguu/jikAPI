@@ -24,7 +24,7 @@ responses:
               type: integer
           example:
             id: 1
-  404:
+  204:
     description: Job not found
     content:
       application/json:

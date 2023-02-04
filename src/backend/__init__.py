@@ -1,3 +1,4 @@
+from http.client import BAD_REQUEST
 from flask import Flask, render_template, request, jsonify
 import os
 import sys
@@ -44,6 +45,7 @@ def create_app(test_config=None):
 
     Swagger(app, config=swagger_config, template=template)
 
+    # Route to homepage
     @app.route('/')
     def homepage():
         message = "Streamline your job search with this Job Search API. Check it out! #jobs #API"
@@ -55,63 +57,84 @@ def create_app(test_config=None):
         
         return render_template('index.html', tweet_link=tweet_link, linkedin_link=linkedin_link, facebook_link=facebook_link)
 
-
+    # Route to retrieve the list of available jobs
     @app.route('/api/v2/jobs', methods=['GET'])
-    @swag_from('./docs/postings/jobs.yaml')
+    @swag_from('./docs/postings/jobs.yaml')     #--> Use the 'swag_from' decorator to document this endpoint in the Swagger UI
     def available_jobs():
-        data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
-        jobs = data[0][0]
-        return jsonify(jobs)
+        try:
+            data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
+            jobs = data[0][0]
+            if len(jobs) == 0:
+                return jsonify({"error": "No jobs found"}), 204
+            else:
+                return jsonify(jobs), 200
+        except IndexError as err:
+            return jsonify({"error": "Unexpected data format"}), 500
+        except Exception as err:
+            return jsonify({"error": "An unexpected error has occurred"}), 500
 
+    # Route to post new available jobs
     @app.route('/api/v2/jobs/new', methods=['POST'])
     @swag_from('./docs/postings/add_new_opening.yaml')
     def add_new_job():
-        data = request.get_json()
-        jobs = dbcons.getData(tableName=os.environ.get('TABLENAME'))[0][0]
-        # max_id = max([job['id'] for job in jobs])
-        # data['id'] = max_id + 1
-        dbcons.addData(data, tableName=os.environ.get('TABLENAME'))
-        return jsonify({"message": "Job created successfully"}), 201
+        try:
+            # jobs = dbcons.getData(tableName=os.environ.get('TABLENAME'))[0][0]
+            job = request.get_json()
+            # jobs.append(request_data)
+            dbcons.addData(job, tableName=os.environ.get('TABLENAME'))
+            return jsonify({"message": "Job created successfully"}), 201
+        except Exception as err:
+            print(err)
 
+    # Route to update already available jobs with a specific ID
     @app.route('/api/v2/jobs/<int:id>', methods=['PATCH'])
     @swag_from('./docs/postings/update_job_by_id.yaml')
     def update_job_by_id(id):
-        data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
-        jobs = data[0][0]
-        job = next((job for job in jobs if job['id'] == id), None)
-        if job:
-            request_data = request.get_json()
-            for key, value in request_data.items():
-                job[key] = value
-            dbcons.writeData(jobs, tableName=os.environ.get('TABLENAME'))
-            return jsonify(job)
-        else:
-            return jsonify({"error": "Job not found"}), 404
+        try:
+            data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
+            jobs = data[0][0]
+            job = next((job for job in jobs if job['id'] == id), None)
+            if job:
+                request_data = request.get_json()
+                jobname = request_data.get('jobname')
+                joburl = request_data.get('joburl')
+                dbcons.updateData(jobname, joburl, id=job['id'], tableName=os.environ.get('TABLENAME'))
+                return jsonify({"message": "Job updated"}), 200
+            else:
+                return jsonify({"error": "Job not found"}), 204
+        except Exception as err:
+            print(err)
 
-
+    # Route to search for a job with a specific ID
     @app.route('/api/v2/jobs/<int:id>', methods=['GET'])
     @swag_from('./docs/postings/get_job_by_id.yaml')
     def get_by_id(id):
-        data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
-        jobs = data[0][0]
-        job = next((job for job in jobs if job['id'] == id), None)
-        if job:
-            return jsonify(job)
-        else:
-            return jsonify({"error": "Job not found"}), 404
+        try:
+            data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
+            jobs = data[0][0]
+            job = next((job for job in jobs if job['id'] == id), None)
+            if job:
+                return jsonify(job), 200
+            else:
+                return jsonify({"error": "Job not found"}), 204
+        except Exception as err:
+            print(err)
 
+    # Route to delete a job with a specific ID
     @app.route('/api/v2/jobs/<int:id>', methods=['DELETE'])
     @swag_from('./docs/postings/delete_job_by_id.yaml')
     def delete_by_id(id):
-        data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
-        jobs = data[0][0]
-        job = next((job for job in jobs if job['id'] == id), None)
-        if job:
-            jobs.remove(job)
-            dbcons.writeData(jobs, tableName=os.environ.get('TABLENAME'))
-            return jsonify({"message": "Job deleted successfully"}), 200
-        else:
-            return jsonify({"error": "Job not found"}), 404
+        try:
+            data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
+            jobs = data[0][0]
+            job = next((job for job in jobs if job['id'] == id), None)
+            if job:
+                dbcons.deleteData(id=job['id'], tableName=os.environ.get('TABLENAME'))
+                return jsonify({"message": "Job deleted successfully"}), 200
+            else:
+                return jsonify({"error": "Job not found"}), 204
+        except Exception as err:
+            print(err)
         
     # Using Query parameters
     # /api/v2/jobs/keyword?jobname=Software+Developer
@@ -123,25 +146,50 @@ def create_app(test_config=None):
         jobs = data[0][0]
         return jsonify(jobs)
     
+    # Route to find a job with specific keywords
     @app.route('/api/v2/jobs/keyword', methods = ['POST'])
     @swag_from('./docs/postings/use_keyword.yaml')
     def specific_jobs():
-        reqJSON = request.get_json()
-        keyword = reqJSON.get("keyword")
+        try: 
+            reqJSON = request.get_json()
+            keyword = reqJSON.get("keyword")
+            if keyword is None:
+                return jsonify({'error': 'keyword is a required field'})
+            try:
+                data = dbcons.get_specific_job(keywords=keyword, tableName=os.environ.get('TABLENAME'))
+                jobs = data[0][0]
+                if len(jobs) == 0:
+                    return jsonify({"error": "No jobs found"}), 204
+                else:
+                    return jsonify(jobs), 200
+            except Exception as err:
+                print(err)
+                return jsonify({'error': 'An error occurred while retrieving the job data'}), 204
+        except BAD_REQUEST as err:
+           return jsonify({'error': 'The request body must contain valid JSON data'})
 
-        data = dbcons.get_specific_job(keywords=keyword, tableName=os.environ.get('TABLENAME'))
-        jobs = data[0][0]
-        return jsonify(jobs)
-
+    # Route to find a job posted on a specific date
     @app.route('/api/v2/jobs', methods=['POST'])
     @swag_from('./docs/postings/use_date.yaml')
     def date_specified():
-        reqJSON = request.get_json()
-        specified_date = reqJSON['specified_date']
+        try:
+            reqJSON = request.get_json()
+            specified_date = reqJSON['specified_date']
+            if specified_date is None:
+               return jsonify({'error': 'specified_date is a required field'})
+            try:
+                data = dbcons.get_job_of_specific_date(specified_dates=specified_date, tableName=os.environ.get('TABLENAME'))
+                jobs = data[0][0]
+                if len(jobs) == 0:
+                    return jsonify({"error": "No jobs found"}), 204
+                else:
+                    return jsonify(jobs), 200
+            except Exception as err:
+                print(err)
+                return jsonify({'error': 'An error occurred while retrieving the job data'}), 500
+        except BAD_REQUEST as err:
+           return jsonify({'error': 'The request body must contain valid JSON data'})
 
-        data = dbcons.get_job_of_specific_date(specified_dates=specified_date, tableName=os.environ.get('TABLENAME'))
-        jobs = data[0][0]
-        return jsonify(jobs)
 
     @app.route('/api/v2/newsletter/subscribe', methods=['POST'])
     def subscribe():

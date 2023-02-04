@@ -8,6 +8,7 @@ summary: Add new postings
 parameters:
   - in: body
     name: job
+    required: True
     schema:
       type: object
       properties:
@@ -22,7 +23,7 @@ parameters:
         - joburl
         
 responses:
-  200:
+  201:
     description: Successfully added the new job to the database
   400:
     description: Bad Request

@@ -23,7 +23,7 @@ responses:
             message:
               type: string
               example: Job deleted successfully
-  404:
+  204:
     description: Job not found
     content:
       application/json:
@@ -33,4 +33,3 @@ responses:
             error:
               type: string
               example: Job not found
-security: []

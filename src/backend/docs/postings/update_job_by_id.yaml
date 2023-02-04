@@ -47,7 +47,7 @@ responses:
               type: string
             dateofjobpost:
               type: string
-  404:
+  204:
     description: Job not found
     content:
       application/json:

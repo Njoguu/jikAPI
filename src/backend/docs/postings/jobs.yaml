@@ -7,8 +7,10 @@ description: Returns all jobs from the system that the user has access to
 summary: List of postings
 responses:
   200:
-    description: OK.
+    description: OK
     content:
       application/json:
         schema:
           type: array
+  204:
+    description: No jobs found

@@ -10,16 +10,19 @@ consumes:
   - application/json
 responses:
   200:
-    description: OK.
+    description: OK
     content:
       application/json:
         schema:
           type: array
+  204: 
+    description: No jobs found
       
 parameters:
 - in: body
   name: keyword
-  description: Keyword of job to use.
+  description: Keyword of job to find
+  required: True
   schema:
     type: object
     required:
