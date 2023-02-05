@@ -1,33 +1,41 @@
-try:
-    import sys
-    sys.path.insert(0, '/media/njoguu/New Volume/Projects/Web Projects/jik-api-v2.0-Alpha/src')
-    from backend import *
-    import unittest
-except Exception as err:
-    print(f"Some modules are missing! {err}")
+import pytest
+import sys
+import os
+path = os.getcwd()
+sys.path.append(path+"/src/")
+from backend import create_app
+
+@pytest.fixture()
+def app():
+    app = create_app()
+    app.config.update({
+        "TESTING": True,
+    })
+    # other setup can go here
+    yield app
+
+@pytest.fixture()
+def client(app):
+    return app.test_client()
 
 
-class PageConnectionTestCases(unittest.TestCase):
-    # Check connection to index page
-    def test_index_connection(self):
-        app = create_app()
-        tester = app.test_client(self)  # type: ignore
-        response = tester.get('/').status_code
-        self.assertEqual(response, 200)
+# Check connection to index page
+def test_index_connection(client):
+    response = client.get('/')
+    assert response.status_code == 200
+    assert b'jikAPI' in response.data
 
-    # Check connection to versions page
-    def test_api_page(self):
-        app = create_app()
-        tester = app.test_client(self)   # type: ignore
-        response = tester.get('/api/v2/').status_code
-        self.assertEqual(response, 200)
+# Check connection to api-docs page
+def test_api_page(client):
+    response = client.get('/api/v2/')
+    assert response.status_code == 200
+    assert b'Flasgger' in response.data
 
-    # Check connection to api page
-    # def test_api_page(self):
-    #     app = create_app()
-    #     tester = app.test_client(self)
-    #     response = tester.get('/api/v1/jobs').status_code
-    #     self.assertEqual(response, 200)
+# Check connection to unsubscribe page
+def test_unsubscribepage_connection(client):
+    response = client.get('/api/v2/newsletter/unsubscribe')
+    assert response.status_code == 200
+    assert b'Unsubscribe' in response.data
 
 if __name__ == '__main__':
-    unittest.main()
+    pytest.main()
