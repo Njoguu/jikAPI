@@ -36,5 +36,5 @@ swagger_config = {
     ],
     "static_url_path" : "/flassger_static",
     "swagger_ui":True,
-    "specs_route" : "/api/v2/"
+    "specs_route" : "/api/v2/docs"
 }

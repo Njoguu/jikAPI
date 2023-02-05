@@ -74,7 +74,7 @@ def create_app(test_config=None):
             return jsonify({"error": "An unexpected error has occurred"}), 500
 
     # Route to post new available jobs
-    @app.route('/api/v2/jobs/new', methods=['POST'])
+    @app.route('/api/v2/jobs', methods=['POST'])
     @swag_from('./docs/postings/add_new_opening.yaml')
     def add_new_job():
         try:
@@ -169,7 +169,7 @@ def create_app(test_config=None):
            return jsonify({'error': 'The request body must contain valid JSON data'})
 
     # Route to find a job posted on a specific date
-    @app.route('/api/v2/jobs', methods=['POST'])
+    @app.route('/api/v2/jobs/date', methods=['POST'])
     @swag_from('./docs/postings/use_date.yaml')
     def date_specified():
         try:
