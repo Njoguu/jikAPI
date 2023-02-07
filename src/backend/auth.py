@@ -6,11 +6,13 @@ path = os.getcwd()
 sys.path.append(path+"/src/")
 from backend import database as dbcons
 from flask_jwt_extended import create_access_token,create_refresh_token, jwt_required, get_jwt_identity
+from flasgger import swag_from
 
 auth = Blueprint("auth", __name__, url_prefix="/api/v2/auth")
 
 
 @auth.post('/register')
+@swag_from('./docs/auth/register.yaml')
 def register():
     conn = dbcons.getConnection()
     cur = conn.cursor()
@@ -53,6 +55,7 @@ def register():
     return jsonify({"message":"User Created!","user":{'username':username, 'email':email}}), CREATED
 
 @auth.post('/login')
+@swag_from('./docs/auth/login.yaml')
 def login():
     conn = dbcons.getConnection()
     cur = conn.cursor()
@@ -88,6 +91,7 @@ def login():
 
 @auth.get("/me")
 @jwt_required()
+@swag_from('./docs/auth/get_logged_in_user.yaml')
 def me():
     user_id = get_jwt_identity()
 
@@ -107,6 +111,7 @@ def me():
 
 @auth.get("/token/refresh")
 @jwt_required(refresh=True)
+@swag_from('./docs/auth/get_refresh.yaml')
 def refresh_token():   
     identity = get_jwt_identity()
     access = create_access_token(identity=identity)
