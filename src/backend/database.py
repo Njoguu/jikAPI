@@ -184,3 +184,24 @@ def deleteData(id, tableName):
         conn.close()
     except Exception as err:
         print(f"Error! Program is not working as expected! {err}")
+
+# Function to create users
+def addUser(username, email, pwd_hash, userTableName):
+    conn = getConnection()
+    cur = conn.cursor()
+
+    try:
+        cur.execute(f'''
+            INSERT INTO {userTableName} (username, email, password)
+            VALUES (%s, %s, %s)
+        ''', (username, email, pwd_hash))
+
+        # Commit the changes to the database
+        conn.commit()
+        
+        # Close the cursor and connection
+        cur.close()
+        conn.close()
+
+    except Exception as err:
+        print(err)
