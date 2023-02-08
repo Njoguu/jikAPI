@@ -6,6 +6,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PORT: ${{ secrets.PORT }}
+      DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
+      USER: ${{ secrets.USER }}
+      PASSWORD: ${{ secrets.PASSWORD }}
+      HOST: ${{ secrets.HOST }} 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
