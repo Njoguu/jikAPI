@@ -40,6 +40,7 @@ def add_new_job():
 
 # Route to update already available jobs with a specific ID
 @postings.route('/api/v2/jobs/<int:id>', methods=['PATCH'])
+@jwt_required()
 @swag_from('./docs/postings/update_job_by_id.yaml')
 def update_job_by_id(id):
     try:
@@ -74,6 +75,7 @@ def get_by_id(id):
 
 # Route to delete a job with a specific ID
 @postings.route('/api/v2/jobs/<int:id>', methods=['DELETE'])
+@jwt_required()
 @swag_from('./docs/postings/delete_job_by_id.yaml')
 def delete_by_id(id):
     try:

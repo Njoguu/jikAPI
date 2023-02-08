@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
+from http.client import NOT_FOUND, INTERNAL_SERVER_ERROR
 import os
 import sys
 path = os.getcwd()
@@ -54,6 +55,14 @@ def create_app(test_config=None):
         facebook_link = "https://www.facebook.com/sharer/sharer.php?u=" + url
         
         return render_template('index.html', tweet_link=tweet_link, linkedin_link=linkedin_link, facebook_link=facebook_link)
+
+    @app.errorhandler(NOT_FOUND)
+    def handle_404(e):
+        return jsonify({'error': 'Not found'}), NOT_FOUND
+
+    @app.errorhandler(INTERNAL_SERVER_ERROR)
+    def handle_500(e):
+        return jsonify({'error': 'Something went wrong, we are working on it'}), INTERNAL_SERVER_ERROR
 
     return app
     
