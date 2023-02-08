@@ -1,26 +1,20 @@
 # Import Necessary modules
 import psycopg2
-import configparser
 import logging
-import datetime 
+import datetime, os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Function to get a database connection
 def getConnection():
-    config = configparser.ConfigParser()
-    config.readfp(open(f'config.ini'))
-
-    DB = config.get('DB', 'database')
-    UID = config.get('DB', 'user')
-    PWD = config.get('DB', 'password')
-    DSN = config.get('DB', 'host')
-    PRT = config.get('DB', 'port')
-
+    
     conn = psycopg2.connect(
-        host = DSN,
-        database = DB,
-        user = UID,
-        password = PWD,
-        port = PRT,
+        host = os.getenv('HOST'),
+        database = os.getenv('DATABASE_NAME'),
+        user = os.getenv('USER'),
+        password = os.getenv('PASSWORD'),
+        port = int(os.getenv('PORT')),
     )
     
     return conn

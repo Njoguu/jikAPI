@@ -27,7 +27,7 @@ def test_index_connection(client):
 
 # Check connection to api-docs page
 def test_api_page(client):
-    response = client.get('/api/v2/')
+    response = client.get('/api/v2/docs')
     assert response.status_code == 200
     assert b'Flasgger' in response.data
 
