@@ -2,6 +2,7 @@
 [![Github Issues](https://img.shields.io/github/issues-raw/Njoguu/jik-api-v2.0-Alpha)](https://github.com/Njoguu/jik-api-v2.0-Alpha/issues) 
 [![Github pull requests](https://img.shields.io/github/issues-pr-raw/Njoguu/jik-api-v2.0-Alpha?color=yellow)](https://github.com/Njoguu/jik-api-v2.0-Alpha/pulls) <br>
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Follow%20%40jikAPI)](https://twitter.com/@the_jikAPI)
+[![jikAPI](https://github.com/Njoguu/jik-api-v2.0-Alpha/actions/workflows/jikAPI.yml/badge.svg)](https://github.com/Njoguu/jik-api-v2.0-Alpha/actions/workflows/jikAPI.yml)
 [![Tests](https://github.com/Njoguu/jik-api-v2.0-Alpha/actions/workflows/tests.yml/badge.svg)](https://github.com/Njoguu/jik-api-v2.0-Alpha/actions/workflows/tests.yml)
 
 ## Description:
