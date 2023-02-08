@@ -8,9 +8,9 @@ from backend import database as dbcons
 
 # test a connection to PostgreSQL jikAPI database
 def test_db_connection():
+    conn = dbcons.getConnection()
+    cursor = conn.cursor()
     try:
-        conn = dbcons.getConnection()
-        cursor = conn.cursor()
         cursor.execute("SELECT 1")
         assert cursor.fetchone() == (1,)
     except Exception as e:
