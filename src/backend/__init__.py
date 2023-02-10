@@ -24,10 +24,9 @@ def create_app(test_config=None):
     if test_config is None:
 
         app.config.from_mapping(
-            SECRET_KEY=os.getenv("SECRET_KEY"),
-            SQLALCHEMY_DATABASE_URI=os.getenv("SQLALCHEMY_DB_URI"),
+            SECRET_KEY=os.environ["SECRET_KEY"],
             SQLALCHEMY_TRACK_MODIFICATIONS=False, 
-            JWT_SECRET_KEY=os.getenv("JWT_SECRET_KEY"),
+            JWT_SECRET_KEY=os.environ["JWT_SECRET_KEY"],
 
             SWAGGER = {
                 "title" : "jikAPI",

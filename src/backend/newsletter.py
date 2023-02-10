@@ -73,7 +73,7 @@ def unsubscribe():
                     'status': 'unsubscribed',
                 }
                 response = mailchimp.lists.update_list_member(
-                    os.getenv('MAILCHIMP_MARKETING_AUDIENCE_ID'),
+                    os.environ['MAILCHIMP_MARKETING_AUDIENCE_ID'],
                     form_email_hash,
                     member_update,
                 )

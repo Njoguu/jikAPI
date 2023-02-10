@@ -53,7 +53,7 @@ def register():
 
     pwd_hash = generate_password_hash(password)
 
-    dbcons.addUser(username=username, email=email, pwd_hash=pwd_hash, userTableName=os.getenv('userTableName'))
+    dbcons.addUser(username=username, email=email, pwd_hash=pwd_hash, userTableName=os.environ['userTableName'])
     
     return jsonify({"message":"User Created!","user":{'username':username, 'email':email}}), CREATED
 
