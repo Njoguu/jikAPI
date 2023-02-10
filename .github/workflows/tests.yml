@@ -10,6 +10,15 @@ jobs:
       USER: ${{ secrets.USER }}
       PASSWORD: ${{ secrets.PASSWORD }}
       HOST: ${{ secrets.HOST }} 
+      MAILCHIMP_API_KEY: ${{ secrets.MAILCHIMP_API_KEY }}
+      MAILCHIMP_REGION: ${{ secrets.MAILCHIMP_REGION }} 
+      MAILCHIMP_MARKETING_AUDIENCE_ID: ${{ secrets.MAILCHIMP_MARKETING_AUDIENCE_ID }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      RECAPTCHA_API_SECRET_KEY: ${{ secrets.RECAPTCHA_API_SECRET_KEY }}
+      RECAPTCHA_API_KEY: ${{ secrets.RECAPTCHA_API_KEY }}
+      JWT_SECRET_KEY: ${{ secrets.RECAPTCHA_API_KEY }}
+      TABLENAME: ${{ secrets.TABLENAME }}
+      userTableName: ${{ secrets.USERTABLENAME }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
