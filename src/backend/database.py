@@ -14,7 +14,7 @@ def getConnection():
         database = os.environ['DATABASE_NAME'],
         user = os.environ['USER'],
         password = os.environ['PASSWORD'],
-        port = int(os.environ['PORT']),
+        port = os.environ['PORT'],
     )
     
     return conn
