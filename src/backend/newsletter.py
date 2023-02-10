@@ -8,13 +8,16 @@ import hashlib
 import logging
 import requests
 import json
+from dotenv import load_dotenv
+
+load_dotenv()
 
 newsletter = Blueprint("newsletter", __name__, url_prefix="/api/v2/newsletter")
 
 mailchimp = Client()
 mailchimp.set_config({
-    'api_key': os.environ.get('MAILCHIMP_API_KEY'),
-    'server': os.environ.get('MAILCHIMP_REGION'),
+    'api_key': os.getenv('MAILCHIMP_API_KEY'),
+    'server': os.getenv('MAILCHIMP_REGION'),
 })
 
 logger = logging.getLogger(__name__)
@@ -40,7 +43,7 @@ def subscribe():
                     'status': 'subscribed',
                 }
                 response = mailchimp.lists.set_list_member(
-                    os.environ.get('MAILCHIMP_MARKETING_AUDIENCE_ID'),
+                    os.getenv('MAILCHIMP_MARKETING_AUDIENCE_ID'),
                     form_email_hash,
                     member_update,
                 )
@@ -70,7 +73,7 @@ def unsubscribe():
                     'status': 'unsubscribed',
                 }
                 response = mailchimp.lists.update_list_member(
-                    os.environ.get('MAILCHIMP_MARKETING_AUDIENCE_ID'),
+                    os.getenv('MAILCHIMP_MARKETING_AUDIENCE_ID'),
                     form_email_hash,
                     member_update,
                 )

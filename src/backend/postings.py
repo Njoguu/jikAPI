@@ -6,6 +6,9 @@ sys.path.append(path+"/src/")
 from backend import database as dbcons
 from flask_jwt_extended import jwt_required
 from flasgger import swag_from
+from dotenv import load_dotenv
+
+load_dotenv()
 
 postings = Blueprint("postings", __name__, url_prefix="")
 
@@ -14,7 +17,7 @@ postings = Blueprint("postings", __name__, url_prefix="")
 @swag_from('./docs/postings/jobs.yaml')     #--> Use the 'swag_from' decorator to document this endpoint in the Swagger UI
 def available_jobs():
     try:
-        data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
+        data = dbcons.getData(tableName=os.getenv('TABLENAME'))
         jobs = data[0][0]
         if len(jobs) == 0:
             return jsonify({"error": "No jobs found"}), NO_CONTENT
@@ -30,10 +33,10 @@ def available_jobs():
 @swag_from('./docs/postings/add_new_opening.yaml')
 def add_new_job():
     try:
-        # jobs = dbcons.getData(tableName=os.environ.get('TABLENAME'))[0][0]
+        # jobs = dbcons.getData(tableName=os.getenv('TABLENAME'))[0][0]
         job = request.get_json()
         # jobs.append(request_data)
-        dbcons.addData(job, tableName=os.environ.get('TABLENAME'))
+        dbcons.addData(job, tableName=os.getenv('TABLENAME'))
         return jsonify({"message": "Job created successfully", "job":job}), CREATED
     except Exception as err:
         print(err)
@@ -44,14 +47,14 @@ def add_new_job():
 @swag_from('./docs/postings/update_job_by_id.yaml')
 def update_job_by_id(id):
     try:
-        data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
+        data = dbcons.getData(tableName=os.getenv('TABLENAME'))
         jobs = data[0][0]
         job = next((job for job in jobs if job['id'] == id), None)
         if job:
             request_data = request.get_json()
             jobname = request_data.get('jobname')
             joburl = request_data.get('joburl')
-            dbcons.updateData(jobname, joburl, id=job['id'], tableName=os.environ.get('TABLENAME'))
+            dbcons.updateData(jobname, joburl, id=job['id'], tableName=os.getenv('TABLENAME'))
             return jsonify({"message": "Job updated"}), OK
         else:
             return jsonify({"error": "Job not found"}), NO_CONTENT
@@ -63,7 +66,7 @@ def update_job_by_id(id):
 @swag_from('./docs/postings/get_job_by_id.yaml')
 def get_by_id(id):
     try:
-        data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
+        data = dbcons.getData(tableName=os.getenv('TABLENAME'))
         jobs = data[0][0]
         job = next((job for job in jobs if job['id'] == id), None)
         if job:
@@ -79,11 +82,11 @@ def get_by_id(id):
 @swag_from('./docs/postings/delete_job_by_id.yaml')
 def delete_by_id(id):
     try:
-        data = dbcons.getData(tableName=os.environ.get('TABLENAME'))
+        data = dbcons.getData(tableName=os.getenv('TABLENAME'))
         jobs = data[0][0]
         job = next((job for job in jobs if job['id'] == id), None)
         if job:
-            dbcons.deleteData(id=job['id'], tableName=os.environ.get('TABLENAME'))
+            dbcons.deleteData(id=job['id'], tableName=os.getenv('TABLENAME'))
             return jsonify({"message": "Job deleted successfully"}), OK
         else:
             return jsonify({"error": "Job not found"}), NO_CONTENT
@@ -96,7 +99,7 @@ def delete_by_id(id):
 def qspecific_jobs():
     keyword = request.args.get('jobname', '', type=str)
 
-    data = dbcons.get_specific_job(keywords=keyword, tableName=os.environ.get('TABLENAME'))
+    data = dbcons.get_specific_job(keywords=keyword, tableName=os.getenv('TABLENAME'))
     jobs = data[0][0]
     return jsonify(jobs)
 
@@ -110,7 +113,7 @@ def specific_jobs():
         if keyword is None:
             return jsonify({'error': 'keyword is a required field'})
         try:
-            data = dbcons.get_specific_job(keywords=keyword, tableName=os.environ.get('TABLENAME'))
+            data = dbcons.get_specific_job(keywords=keyword, tableName=os.getenv('TABLENAME'))
             jobs = data[0][0]
             if len(jobs) == 0:
                 return jsonify({"error": "No jobs found"}), NO_CONTENT
@@ -132,7 +135,7 @@ def date_specified():
         if specified_date is None:
             return jsonify({'error': 'specified_date is a required field'})
         try:
-            data = dbcons.get_job_of_specific_date(specified_dates=specified_date, tableName=os.environ.get('TABLENAME'))
+            data = dbcons.get_job_of_specific_date(specified_dates=specified_date, tableName=os.getenv('TABLENAME'))
             jobs = data[0][0]
             if len(jobs) == 0:
                 return jsonify({"error": "No jobs found"}), NO_CONTENT

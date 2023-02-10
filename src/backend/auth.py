@@ -7,6 +7,9 @@ sys.path.append(path+"/src/")
 from backend import database as dbcons
 from flask_jwt_extended import create_access_token,create_refresh_token, jwt_required, get_jwt_identity
 from flasgger import swag_from
+from dotenv import load_dotenv
+
+load_dotenv()
 
 auth = Blueprint("auth", __name__, url_prefix="/api/v2/auth")
 
@@ -35,7 +38,7 @@ def register():
         return jsonify({"error":"Email is not valid!"}), BAD_REQUEST
 
     ## Check to see if item is already in database 
-    userTableName = os.environ.get('userTableName')
+    userTableName = os.getenv('userTableName')
     cur.execute(f"select * from {userTableName} where username = %s", (username,))
     username_result = cur.fetchone()
 
@@ -50,7 +53,7 @@ def register():
 
     pwd_hash = generate_password_hash(password)
 
-    dbcons.addUser(username=username, email=email, pwd_hash=pwd_hash, userTableName=os.environ.get('userTableName'))
+    dbcons.addUser(username=username, email=email, pwd_hash=pwd_hash, userTableName=os.getenv('userTableName'))
     
     return jsonify({"message":"User Created!","user":{'username':username, 'email':email}}), CREATED
 
@@ -64,7 +67,7 @@ def login():
     password = request.json.get('password','')
 
     ## Check to see if item is already in database 
-    userTableName = os.environ.get('userTableName')
+    userTableName = os.getenv('userTableName')
     cur.execute(f"select password from {userTableName} where email = %s", (email,))
     password_hash = cur.fetchone()[0]
     
@@ -95,7 +98,7 @@ def login():
 def me():
     user_id = get_jwt_identity()
 
-    userTableName = os.environ.get('userTableName')
+    userTableName = os.getenv('userTableName')
 
     conn = dbcons.getConnection()
     cur = conn.cursor()

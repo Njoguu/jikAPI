@@ -10,6 +10,9 @@ from backend.auth import auth
 from backend.postings import postings
 from backend.newsletter import newsletter
 from flask_jwt_extended import JWTManager
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def create_app(test_config=None):
 
@@ -21,10 +24,10 @@ def create_app(test_config=None):
     if test_config is None:
 
         app.config.from_mapping(
-            SECRET_KEY=os.environ.get("SECRET_KEY"),
-            SQLALCHEMY_DATABASE_URI=os.environ.get("SQLALCHEMY_DB_URI"),
+            SECRET_KEY=os.getenv("SECRET_KEY"),
+            SQLALCHEMY_DATABASE_URI=os.getenv("SQLALCHEMY_DB_URI"),
             SQLALCHEMY_TRACK_MODIFICATIONS=False, 
-            JWT_SECRET_KEY=os.environ.get("JWT_SECRET_KEY"),
+            JWT_SECRET_KEY=os.getenv("JWT_SECRET_KEY"),
 
             SWAGGER = {
                 "title" : "jikAPI",
