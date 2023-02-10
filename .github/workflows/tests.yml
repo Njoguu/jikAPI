@@ -10,6 +10,8 @@ jobs:
       USER: ${{ secrets.USER }}
       PASSWORD: ${{ secrets.PASSWORD }}
       HOST: ${{ secrets.HOST }} 
+      MAILCHIMP_API_KEY: ${{ secrets.MAILCHIMP_API_KEY }}
+      MAILCHIMP_REGION: ${{ secrets.MAILCHIMP_REGION }} 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
