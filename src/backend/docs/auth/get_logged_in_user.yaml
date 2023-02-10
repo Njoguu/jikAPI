@@ -1,0 +1,15 @@
+Returns details of the logged in user
+---
+tags:
+  - User
+
+description: Returns username and email address of the logged in user 
+summary: List of postings
+responses:
+  200:
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: object
+          

@@ -6,7 +6,7 @@
 <div class="container mt-5">
     <h1>Unsubscribe</h1>
     <p>Enter your email address to unsubscribe from our mailing list.</p>
-    <form method="POST" action="{{ url_for('unsubscribe') }}" id="unsubscribeForm">
+    <form method="POST" action="{{ url_for('newsletter.unsubscribe') }}" id="unsubscribeForm">
         <div class="form-floating mb-3">
             <input type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com">
             <label for="floatingInput">Email address</label>

@@ -1,0 +1,35 @@
+Delete a job posting with a specific ID
+---
+
+tags:
+  - Postings
+
+description: Deletes a job by ID.
+parameters:
+  - in: path
+    name: id
+    description: ID of job to delete
+    required: true
+    schema:
+      type: integer
+responses:
+  200:
+    description: Job deleted successfully
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: Job deleted successfully
+  204:
+    description: Job not found
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            error:
+              type: string
+              example: Job not found

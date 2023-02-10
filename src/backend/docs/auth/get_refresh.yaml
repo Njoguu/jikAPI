@@ -1,0 +1,14 @@
+Returns refreshed access token
+---
+tags:
+  - User
+
+description: Returns a newly refreshed access_token of the logged in user 
+summary: List of postings
+responses:
+  200:
+    description: OK
+    content:
+      application/json:
+        schema:
+          type: object

@@ -19,7 +19,15 @@ template = {
     "schemes" : [
         "http",
         "https"
-    ]
+    ],
+    "securityDefinitions" : {
+        "Bearer":{
+            "type" : "apiKey",
+            "name" : "Authorization",
+            "in" : "header",
+            "description" : "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\""
+        }
+    }
 }
 
 swagger_config = {
@@ -36,5 +44,5 @@ swagger_config = {
     ],
     "static_url_path" : "/flassger_static",
     "swagger_ui":True,
-    "specs_route" : "/api/v2/"
+    "specs_route" : "/api/v2/docs"
 }
