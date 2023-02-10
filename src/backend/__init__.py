@@ -43,7 +43,7 @@ def create_app(test_config=None):
     app.register_blueprint(blueprint=postings)
     app.register_blueprint(blueprint=newsletter)
 
-    recaptcha_API_key = os.getenv('RECAPTCHA_API_KEY')
+    recaptcha_API_key = os.environ['RECAPTCHA_API_KEY']
 
     JWTManager(app)
 

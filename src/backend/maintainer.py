@@ -19,5 +19,5 @@ def delete_jobs(tableName):
 
 
 if __name__ == '__main__':
-    tableName = os.getenv('TABLENAME')
+    tableName = os.environ['TABLENAME']
     delete_jobs(tableName)

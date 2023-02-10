@@ -16,8 +16,8 @@ newsletter = Blueprint("newsletter", __name__, url_prefix="/api/v2/newsletter")
 
 mailchimp = Client()
 mailchimp.set_config({
-    'api_key': os.getenv('MAILCHIMP_API_KEY'),
-    'server': os.getenv('MAILCHIMP_REGION'),
+    'api_key': os.environ['MAILCHIMP_API_KEY'],
+    'server': os.environ['MAILCHIMP_REGION'],
 })
 
 logger = logging.getLogger(__name__)
@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 # Recaptcha setup
 recaptcha_API_secret_key = os.getenv('RECAPTCHA_API_SECRET_KEY')
 verify_url = 'https://www.google.com/recaptcha/api/siteverify'
-recaptcha_API_key = os.getenv('RECAPTCHA_API_KEY')
+recaptcha_API_key = os.environ['RECAPTCHA_API_KEY']
 
 @newsletter.route('/subscribe', methods=['POST'])
 def subscribe():

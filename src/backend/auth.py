@@ -38,7 +38,7 @@ def register():
         return jsonify({"error":"Email is not valid!"}), BAD_REQUEST
 
     ## Check to see if item is already in database 
-    userTableName = os.getenv('userTableName')
+    userTableName = os.environ['userTableName']
     cur.execute(f"select * from {userTableName} where username = %s", (username,))
     username_result = cur.fetchone()
 
@@ -67,7 +67,7 @@ def login():
     password = request.json.get('password','')
 
     ## Check to see if item is already in database 
-    userTableName = os.getenv('userTableName')
+    userTableName = os.envrion['userTableName']
     cur.execute(f"select password from {userTableName} where email = %s", (email,))
     password_hash = cur.fetchone()[0]
     
@@ -98,7 +98,7 @@ def login():
 def me():
     user_id = get_jwt_identity()
 
-    userTableName = os.getenv('userTableName')
+    userTableName = os.environ['userTableName']
 
     conn = dbcons.getConnection()
     cur = conn.cursor()
