@@ -40,6 +40,8 @@ def create_app(test_config=None):
     app.register_blueprint(blueprint=postings)
     app.register_blueprint(blueprint=newsletter)
 
+    recaptcha_API_key = os.getenv('RECAPTCHA_API_KEY')
+
     JWTManager(app)
 
     Swagger(app, config=swagger_config, template=template)
@@ -54,7 +56,7 @@ def create_app(test_config=None):
         linkedin_link = "https://www.linkedin.com/sharing/share-offsite/?url=" + url
         facebook_link = "https://www.facebook.com/sharer/sharer.php?u=" + url
         
-        return render_template('index.html', tweet_link=tweet_link, linkedin_link=linkedin_link, facebook_link=facebook_link)
+        return render_template('index.html', tweet_link=tweet_link, linkedin_link=linkedin_link, facebook_link=facebook_link, site_key=recaptcha_API_key)
 
     @app.errorhandler(NOT_FOUND)
     def handle_404(e):

@@ -135,9 +135,13 @@
                                 <form class="form-group" method="POST" action="{{ url_for('newsletter.subscribe') }}" id="newsletterForm">
                                     <div class="input-group">
                                         <input type="email" required name="email" id="formEmail" placeholder="Enter your email address" class="form-control footer-input-text">
-                                        <div class="input-group-btn">
-                                            <input type="submit" value="Subscribe" class="btn btn-primary btn-newsletter">
-                                        </div>
+                                        <button 
+                                            type="submit"
+                                            class="g-recaptcha btn btn-primary btn-newsletter" 
+                                            data-sitekey="{{ site_key }}" 
+                                            data-callback='onSubmit' 
+                                            data-action='submit'> Subscribe
+                                        </button>
                                     </div>
                                 </form>
         

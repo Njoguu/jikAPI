@@ -11,7 +11,13 @@
             <input type="email" name="email" class="form-control" id="floatingInput" placeholder="name@example.com">
             <label for="floatingInput">Email address</label>
         </div>
-        <button type="submit" class="btn btn-danger">Unsubscribe</button>
+        <button 
+            type="submit"
+            class="g-recaptcha btn btn-danger" 
+            data-sitekey="{{ site_key }}" 
+            data-callback='onSubmit' 
+            data-action='submit'> Unsubscribe
+        </button>
     </form>
     
 </div>

@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template
+from flask import Blueprint, request, render_template, abort
 import os, sys
 path = os.getcwd()
 sys.path.append(path+"/src/")
@@ -6,6 +6,7 @@ from mailchimp_marketing import Client
 from mailchimp_marketing.api_client import ApiClientError
 import hashlib
 import logging
+import requests
 import json
 
 newsletter = Blueprint("newsletter", __name__, url_prefix="/api/v2/newsletter")
@@ -18,6 +19,10 @@ mailchimp.set_config({
 
 logger = logging.getLogger(__name__)
 
+# Recaptcha setup
+recaptcha_API_secret_key = os.getenv('RECAPTCHA_API_SECRET_KEY')
+verify_url = 'https://www.google.com/recaptcha/api/siteverify'
+recaptcha_API_key = os.getenv('RECAPTCHA_API_KEY')
 
 @newsletter.route('/subscribe', methods=['POST'])
 def subscribe():
@@ -25,19 +30,24 @@ def subscribe():
     if request.method == 'POST':
         try:
             email = request.form['email']
-            form_email_hash = hashlib.md5(email.encode('utf-8').lower()).hexdigest()
-            member_update = {
-                'status': 'subscribed',
-            }
-            response = mailchimp.lists.set_list_member(
-                os.environ.get('MAILCHIMP_MARKETING_AUDIENCE_ID'),
-                form_email_hash,
-                member_update,
-            )
-            logger.info(f'API call successful: {response}')
-            data = '{"title": "Successfully subscribed!","message": "You have been successfully subscribed to our mailing list."}'
-            json_data = json.loads(data)
-            return render_template('message.html', json_data=json_data)
+            secret_response = request.form['g-recaptcha-response']
+            verify_response = requests.post(url=f'{verify_url}?secret={recaptcha_API_secret_key}&response={secret_response}').json()
+            if verify_response['success'] == False:
+                abort(401)
+            else:
+                form_email_hash = hashlib.md5(email.encode('utf-8').lower()).hexdigest()
+                member_update = {
+                    'status': 'subscribed',
+                }
+                response = mailchimp.lists.set_list_member(
+                    os.environ.get('MAILCHIMP_MARKETING_AUDIENCE_ID'),
+                    form_email_hash,
+                    member_update,
+                )
+                logger.info(f'API call successful: {response}')
+                data = '{"title": "Successfully subscribed!","message": "You have been successfully subscribed to our mailing list."}'
+                json_data = json.loads(data)
+                return render_template('message.html', json_data=json_data)
 
         except ApiClientError as error:
             logger.error(f'An exception occurred: {error.text}')
@@ -50,19 +60,24 @@ def unsubscribe():
     if request.method == 'POST':
         try:
             email = request.form['email']
-            form_email_hash = hashlib.md5(email.encode('utf-8').lower()).hexdigest()
-            member_update = {
-                'status': 'unsubscribed',
-            }
-            response = mailchimp.lists.update_list_member(
-                os.environ.get('MAILCHIMP_MARKETING_AUDIENCE_ID'),
-                form_email_hash,
-                member_update,
-            )
-            logger.info(f'API call successful: {response}')
-            data = '{"title": "Successfully unsubscribed!","message": "You have been successfully unsubscribed from our mailing list."}'
-            json_data = json.loads(data)
-            return render_template('message.html', json_data=json_data)
+            secret_response = request.form['g-recaptcha-response']
+            verify_response = requests.post(url=f'{verify_url}?secret={recaptcha_API_secret_key}&response={secret_response}').json()
+            if verify_response['success'] == False:
+                abort(401)
+            else:
+                form_email_hash = hashlib.md5(email.encode('utf-8').lower()).hexdigest()
+                member_update = {
+                    'status': 'unsubscribed',
+                }
+                response = mailchimp.lists.update_list_member(
+                    os.environ.get('MAILCHIMP_MARKETING_AUDIENCE_ID'),
+                    form_email_hash,
+                    member_update,
+                )
+                logger.info(f'API call successful: {response}')
+                data = '{"title": "Successfully unsubscribed!","message": "You have been successfully unsubscribed from our mailing list."}'
+                json_data = json.loads(data)
+                return render_template('message.html', json_data=json_data)
 
         except ApiClientError as error:
             logger.error(f'An exception occurred: {error.text}')
@@ -70,7 +85,7 @@ def unsubscribe():
             json_data = json.loads(data)
             return render_template('message.html', json_data=json_data)
 
-    return render_template('unsubscribe.html')
+    return render_template('unsubscribe.html', site_key=recaptcha_API_key)
 
 #  # TODO --> SEND PING TO TESTS
 #     @newsl.route('/api/mailchimp/ping')
