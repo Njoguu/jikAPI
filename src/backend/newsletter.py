@@ -23,7 +23,7 @@ mailchimp.set_config({
 logger = logging.getLogger(__name__)
 
 # Recaptcha setup
-recaptcha_API_secret_key = os.getenv('RECAPTCHA_API_SECRET_KEY')
+recaptcha_API_secret_key = os.environ['RECAPTCHA_API_SECRET_KEY']
 verify_url = 'https://www.google.com/recaptcha/api/siteverify'
 recaptcha_API_key = os.environ['RECAPTCHA_API_KEY']
 
@@ -43,7 +43,7 @@ def subscribe():
                     'status': 'subscribed',
                 }
                 response = mailchimp.lists.set_list_member(
-                    os.getenv('MAILCHIMP_MARKETING_AUDIENCE_ID'),
+                    os.environ['MAILCHIMP_MARKETING_AUDIENCE_ID'],
                     form_email_hash,
                     member_update,
                 )
