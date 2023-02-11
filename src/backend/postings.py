@@ -17,12 +17,42 @@ postings = Blueprint("postings", __name__, url_prefix="")
 @swag_from('./docs/postings/jobs.yaml')     #--> Use the 'swag_from' decorator to document this endpoint in the Swagger UI
 def available_jobs():
     try:
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 25, type=int)
+
         data = dbcons.getData(tableName=os.environ['TABLENAME'])
         jobs = data[0][0]
+
+        # Determine the total number of pages
+        total_pages = (len(jobs) + per_page - 1) // per_page
+
+        # Get the slice of data for the current page
+        start = (page - 1) * per_page
+        end = start + per_page
+        current_page_data = jobs[start:end]
+        prev = page-1
+        if prev == 0:
+            prev = None
+        next = page+1
+        if next > total_pages:
+            next = None
+
+        meta = {
+            'current_page' : page,
+            'total_pages' : total_pages,
+            'total_job_count' : len(jobs),
+            'previous_page': prev,
+            'next_page': next,
+
+        }
+
         if len(jobs) == 0:
             return jsonify({"error": "No jobs found"}), NO_CONTENT
         else:
-            return jsonify(jobs), OK
+            return jsonify({
+                'Available jobs' : current_page_data,
+                'meta' : meta
+            }), OK
     except IndexError as err:
         return jsonify({"error": "Unexpected data format"}), INTERNAL_SERVER_ERROR
     except Exception as err:
@@ -110,15 +140,45 @@ def specific_jobs():
     try: 
         reqJSON = request.get_json()
         keyword = reqJSON.get("keyword")
+
+        page = request.args.get('page', 1, type=int)
+        per_page = request.args.get('per_page', 15, type=int)
+
         if keyword is None:
             return jsonify({'error': 'keyword is a required field'})
         try:
             data = dbcons.get_specific_job(keywords=keyword, tableName=os.environ['TABLENAME'])
             jobs = data[0][0]
+
+            # Determine the total number of pages
+            total_pages = (len(jobs) + per_page - 1) // per_page
+
+            # Get the slice of data for the current page
+            start = (page - 1) * per_page
+            end = start + per_page
+            current_page_data = jobs[start:end]
+            prev = page-1
+            if prev == 0:
+                prev = None
+            next = page+1
+            if next > total_pages:
+                next = None
+
+            meta = {
+                'current_page' : page,
+                'total_pages' : total_pages,
+                'total_job_count' : len(jobs),
+                'previous_page': prev,
+                'next_page': next,
+
+            }
             if len(jobs) == 0:
                 return jsonify({"error": "No jobs found"}), NO_CONTENT
             else:
-                return jsonify(jobs), OK
+                return jsonify({
+                    'Available jobs' : current_page_data,
+                    'meta' : meta
+                }), OK
         except Exception as err:
             print(err)
             return jsonify({'error': 'An error occurred while retrieving the job data'}), NO_CONTENT
