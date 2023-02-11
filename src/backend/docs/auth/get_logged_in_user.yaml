@@ -12,4 +12,7 @@ responses:
       application/json:
         schema:
           type: object
-          
+  401:
+    description: Unauthorized
+security:
+  - Bearer: ['Authorization']     

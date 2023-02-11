@@ -60,6 +60,7 @@ def available_jobs():
 
 # Route to post new available jobs
 @postings.route('/api/v2/jobs', methods=['POST'])
+@jwt_required()
 @swag_from('./docs/postings/add_new_opening.yaml')
 def add_new_job():
     try:

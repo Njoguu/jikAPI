@@ -3,8 +3,7 @@ Returns refreshed access token
 tags:
   - User
 
-description: Returns a newly refreshed access_token of the logged in user 
-summary: List of postings
+description: Returns a newly refreshed access_token of the logged in user -> Use the refresh token given on Login as Bearer token
 responses:
   200:
     description: OK
@@ -12,3 +11,8 @@ responses:
       application/json:
         schema:
           type: object
+  401: 
+    description: Unauthorized
+
+security:
+  - Bearer: ['Authorization']  

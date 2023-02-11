@@ -33,3 +33,6 @@ responses:
             error:
               type: string
               example: Job not found
+
+security:
+  - Bearer: ['Authorization']

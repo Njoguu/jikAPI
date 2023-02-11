@@ -67,7 +67,7 @@ def login():
     password = request.json.get('password','')
 
     ## Check to see if item is already in database 
-    userTableName = os.envrion['userTableName']
+    userTableName = os.environ['userTableName']
     cur.execute(f"select password from {userTableName} where email = %s", (email,))
     password_hash = cur.fetchone()[0]
     
@@ -110,7 +110,7 @@ def me():
     cur.close()
     conn.close()
 
-    return jsonify({"username": username, "email": email}), OK
+    return jsonify({"Logged in User": {"username": username, "email": email}}), OK
 
 @auth.get("/token/refresh")
 @jwt_required(refresh=True)

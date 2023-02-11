@@ -56,3 +56,5 @@ responses:
           properties:
             error:
               type: string
+security:
+  - Bearer: ['Authorization']  
