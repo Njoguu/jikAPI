@@ -17,7 +17,6 @@ template = {
     },
     "basePath": "/api/v2/",
     "schemes" : [
-        "http",
         "https"
     ],
     "securityDefinitions" : {
