@@ -12,6 +12,36 @@ load_dotenv()
 
 postings = Blueprint("postings", __name__, url_prefix="")
 
+# Function to paginate certain API responses 
+def paginate(jobs, page, per_page):
+
+    # Determine the total number of pages
+    paginate.total_pages = (len(jobs) + per_page - 1) // per_page
+
+    # Determine total count of available jobs posted
+    paginate.total_job_count = len(jobs)
+
+    # Get the slice of data for the current page
+    start = (page - 1) * per_page
+    end = start + per_page
+
+    # Get current page
+    paginate.current_page = page
+
+    # Get data to display in the current page
+    paginate.current_page_data = jobs[start:end]
+
+    # Get previous page
+    paginate.prev = page-1
+    if paginate.prev == 0:
+        paginate.prev = None
+
+    # Get next page
+    paginate.next = page+1
+    if paginate.next > paginate.total_pages:
+        paginate.next = None
+        
+
 # Route to retrieve the list of available jobs
 @postings.route('/api/v2/jobs', methods=['GET'])
 @swag_from('./docs/postings/jobs.yaml')     #--> Use the 'swag_from' decorator to document this endpoint in the Swagger UI
@@ -23,34 +53,21 @@ def available_jobs():
         data = dbcons.getData(tableName=os.environ['TABLENAME'])
         jobs = data[0][0]
 
-        # Determine the total number of pages
-        total_pages = (len(jobs) + per_page - 1) // per_page
-
-        # Get the slice of data for the current page
-        start = (page - 1) * per_page
-        end = start + per_page
-        current_page_data = jobs[start:end]
-        prev = page-1
-        if prev == 0:
-            prev = None
-        next = page+1
-        if next > total_pages:
-            next = None
+        paginate(jobs, page, per_page)
 
         meta = {
-            'current_page' : page,
-            'total_pages' : total_pages,
-            'total_job_count' : len(jobs),
-            'previous_page': prev,
-            'next_page': next,
-
+            'current_page' : paginate.current_page,
+            'total_pages' : paginate.total_pages,
+            'total_job_count' : paginate.total_job_count,
+            'previous_page': paginate.prev,
+            'next_page': paginate.next,
         }
 
         if len(jobs) == 0:
             return jsonify({"error": "No jobs found"}), NO_CONTENT
         else:
             return jsonify({
-                'Available jobs' : current_page_data,
+                'Available jobs' : paginate.current_page_data,
                 'meta' : meta
             }), OK
     except IndexError as err:
@@ -151,33 +168,21 @@ def specific_jobs():
             data = dbcons.get_specific_job(keywords=keyword, tableName=os.environ['TABLENAME'])
             jobs = data[0][0]
 
-            # Determine the total number of pages
-            total_pages = (len(jobs) + per_page - 1) // per_page
-
-            # Get the slice of data for the current page
-            start = (page - 1) * per_page
-            end = start + per_page
-            current_page_data = jobs[start:end]
-            prev = page-1
-            if prev == 0:
-                prev = None
-            next = page+1
-            if next > total_pages:
-                next = None
+            paginate(jobs, page, per_page)
 
             meta = {
-                'current_page' : page,
-                'total_pages' : total_pages,
-                'total_job_count' : len(jobs),
-                'previous_page': prev,
-                'next_page': next,
+                'current_page' : paginate.current_page,
+                'total_pages' : paginate.total_pages,
+                'total_job_count' : paginate.total_job_count,
+                'previous_page': paginate.prev,
+                'next_page': paginate.next,
 
             }
             if len(jobs) == 0:
                 return jsonify({"error": "No jobs found"}), NO_CONTENT
             else:
                 return jsonify({
-                    'Available jobs' : current_page_data,
+                    'Available jobs' : paginate.current_page_data,
                     'meta' : meta
                 }), OK
         except Exception as err:
