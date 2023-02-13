@@ -11,6 +11,7 @@ from backend.postings import postings
 from backend.newsletter import newsletter
 from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
+import datetime
 
 load_dotenv()
 
@@ -54,11 +55,13 @@ def create_app(test_config=None):
         message = "Streamline your job search with this Job Search API. Check it out! #jobs #API"
         url = "https://jikapi.herokuapp.com"
 
+        current_year = datetime.date.today().year
+
         tweet_link = "https://twitter.com/intent/tweet?text=" + message + "&url=" + url
         linkedin_link = "https://www.linkedin.com/sharing/share-offsite/?url=" + url
         facebook_link = "https://www.facebook.com/sharer/sharer.php?u=" + url
         
-        return render_template('index.html', tweet_link=tweet_link, linkedin_link=linkedin_link, facebook_link=facebook_link, site_key=recaptcha_API_key)
+        return render_template('index.html', tweet_link=tweet_link, linkedin_link=linkedin_link, facebook_link=facebook_link, current_year=current_year, site_key=recaptcha_API_key)
 
     @app.errorhandler(NOT_FOUND)
     def handle_404(e):
