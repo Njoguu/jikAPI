@@ -7,6 +7,7 @@ from backend import database as dbcons
 from flask_jwt_extended import jwt_required
 from flasgger import swag_from
 from dotenv import load_dotenv
+from backend.config.caching import cache
 
 load_dotenv()
 
@@ -44,6 +45,7 @@ def paginate(jobs, page, per_page):
 
 # Route to retrieve the list of available jobs
 @postings.route('/api/v2/jobs', methods=['GET'])
+@cache.cached(timeout=600)
 @swag_from('./docs/postings/jobs.yaml')     #--> Use the 'swag_from' decorator to document this endpoint in the Swagger UI
 def available_jobs():
     try:
@@ -153,6 +155,7 @@ def qspecific_jobs():
 
 # Route to find a job with specific keywords
 @postings.route('/api/v2/jobs/keyword', methods = ['POST'])
+@cache.cached(timeout=600)
 @swag_from('./docs/postings/use_keyword.yaml')
 def specific_jobs():
     try: 
@@ -193,6 +196,7 @@ def specific_jobs():
 
 # Route to find a job posted on a specific date
 @postings.route('/api/v2/jobs/date', methods=['POST'])
+@cache.cached(timeout=600)
 @swag_from('./docs/postings/use_date.yaml')
 def date_specified():
     try:
