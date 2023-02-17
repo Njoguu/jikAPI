@@ -23,9 +23,9 @@ def create_app(test_config=None):
    
     app = Flask(__name__, instance_relative_config=True, template_folder=template_dir, static_folder=static_dir)    
 
-    app.config['CACHE_TYPE'] = os.environ['CACHE_TYPE']
+    app.config['CACHE_TYPE'] = 'redis'
     app.config['CACHE_REDIS_HOST'] = os.environ['CACHE_REDIS_HOST']
-    app.config['CACHE_REDIS_PORT'] = os.environ['CACHE_REDIS_PORT']
+    app.config['CACHE_REDIS_PORT'] = 6379
     app.config['CACHE_REDIS_DB'] = os.environ['CACHE_REDIS_DB']
 
     # Initialize the cache
