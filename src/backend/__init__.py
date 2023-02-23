@@ -25,7 +25,7 @@ def create_app(test_config=None):
 
     app.config['CACHE_TYPE'] = 'redis'
     app.config['CACHE_REDIS_HOST'] = os.environ['CACHE_REDIS_HOST']
-    app.config['CACHE_REDIS_PORT'] = 6379
+    app.config['CACHE_REDIS_PORT'] = 7505
     app.config['CACHE_REDIS_DB'] = os.environ['CACHE_REDIS_DB']
 
     # Initialize the cache
