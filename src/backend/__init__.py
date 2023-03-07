@@ -9,8 +9,8 @@ from backend.config.swagger import swagger_config,template
 from backend.auth import auth
 from backend.postings import postings
 from backend.newsletter import newsletter
-from Data.get_data import get_data as scraper1
-from Data.get_data2 import get_data as scraper2
+from backend.Data.get_data import get_data as scraper1
+from backend.Data.get_data2 import get_data as scraper2
 from flask_jwt_extended import JWTManager
 from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
