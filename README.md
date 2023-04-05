@@ -52,6 +52,6 @@ Go to `http://127.0.0.1:5000`
 To run the API tests, use the following command: `pytest`
 
 ## Documentation
-The API uses Swagger for API documentation. To access the documentation, navigate to /api/v2/docs in your web browser when the API is running.
+The API uses Swagger for API documentation. To access the documentation, navigate to `/api/v2/docs` in your web browser when the API is running.
 
 
