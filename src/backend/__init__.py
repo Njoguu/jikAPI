@@ -9,7 +9,10 @@ from backend.config.swagger import swagger_config,template
 from backend.auth import auth
 from backend.postings import postings
 from backend.newsletter import newsletter
+# from backend.Data.get_data import get_data as scraper1
+# from backend.Data.get_data2 import get_data as scraper2
 from flask_jwt_extended import JWTManager
+# from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
 import datetime
 from backend.config.caching import cache
@@ -23,10 +26,18 @@ def create_app(test_config=None):
    
     app = Flask(__name__, instance_relative_config=True, template_folder=template_dir, static_folder=static_dir)    
 
-    app.config['CACHE_TYPE'] = 'redis'
-    app.config['CACHE_REDIS_HOST'] = os.environ['CACHE_REDIS_HOST']
-    app.config['CACHE_REDIS_PORT'] = 7505
-    app.config['CACHE_REDIS_DB'] = os.environ['CACHE_REDIS_DB']
+    # app.config['CACHE_TYPE'] = 'redis'
+    # app.config['CACHE_REDIS_HOST'] = 'redis'
+    # app.config['CACHE_REDIS_PORT'] = 7505
+
+    # Schedule jobs to be run
+    # tableName = os.environ['TABLENAME']
+    # scheduler = BackgroundScheduler(daemon=True)
+    # scheduler.add_job(func=scraper1(tableName), trigger="interval", hours=1)
+    # scheduler.add_job(func=scraper2(tableName), trigger="interval", hours=1.5)
+    # scheduler.start()
+    # # ensure that the scheduler is stopped when the Flask app is shut down
+    # atexit.register(lambda: scheduler.shutdown())
 
     # Initialize the cache
     cache.init_app(app)
@@ -60,7 +71,6 @@ def create_app(test_config=None):
 
     # Route to homepage
     @app.route('/')
-    @cache.cached(timeout=300)
     def homepage():
         message = "Streamline your job search with this Job Search API. Check it out! #jobs #API"
         url = "https://jikapi.herokuapp.com"
