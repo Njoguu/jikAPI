@@ -3,12 +3,12 @@ import sys
 import os
 path = os.getcwd()
 sys.path.append(path+"/src/")
-from backend import database as dbcons
+from backend import database
 
 
 # test a connection to PostgreSQL jikAPI database
 def test_db_connection():
-    conn = dbcons.getConnection()
+    conn = database.getConnection()
     cursor = conn.cursor()
     try:
         cursor.execute("SELECT 1")
