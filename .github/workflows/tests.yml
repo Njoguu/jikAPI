@@ -5,11 +5,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      PORT: ${{ secrets.PGPORT }}
-      DATABASE_NAME: ${{ secrets.PGDATABASE }}
-      USER: ${{ secrets.PGUSER }}
-      PASSWORD: ${{ secrets.PGPASSWORD }}
-      HOST: ${{ secrets.PGHOST }} 
+      PGPORT: ${{ secrets.PGPORT }}
+      PGDATABASE: ${{ secrets.PGDATABASE }}
+      PGUSER: ${{ secrets.PGUSER }}
+      PGPASSWORD: ${{ secrets.PGPASSWORD }}
+      PGHOST: ${{ secrets.PGHOST }} 
       MAILCHIMP_API_KEY: ${{ secrets.MAILCHIMP_API_KEY }}
       MAILCHIMP_REGION: ${{ secrets.MAILCHIMP_REGION }} 
       MAILCHIMP_MARKETING_AUDIENCE_ID: ${{ secrets.MAILCHIMP_MARKETING_AUDIENCE_ID }}
