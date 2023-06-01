@@ -1,9 +1,9 @@
 # jikAPI
-[![Github Issues](https://img.shields.io/github/issues-raw/Njoguu/jik-api-v2.0-Alpha)](https://github.com/Njoguu/jik-api-v2.0-Alpha/issues) 
-[![Github pull requests](https://img.shields.io/github/issues-pr-raw/Njoguu/jik-api-v2.0-Alpha?color=yellow)](https://github.com/Njoguu/jik-api-v2.0-Alpha/pulls) <br>
+[![Github Issues](https://img.shields.io/github/issues-raw/Njoguu/jikAPI)](https://github.com/Njoguu/jikAPI/issues) 
+[![Github pull requests](https://img.shields.io/github/issues-pr-raw/Njoguu/jikAPI?color=yellow)](https://github.com/Njoguu/jikAPI/pulls) <br>
 [![Twitter](https://img.shields.io/twitter/url/https/twitter.com/cloudposse.svg?style=social&label=Follow%20%40jikAPI)](https://twitter.com/@the_jikAPI)
-[![jikAPI](https://github.com/Njoguu/jik-api-v2.0-Alpha/actions/workflows/jikAPI.yml/badge.svg?event=push)](https://github.com/Njoguu/jik-api-v2.0-Alpha/actions/workflows/jikAPI.yml)
-[![Tests](https://github.com/Njoguu/jik-api-v2.0-Alpha/actions/workflows/tests.yml/badge.svg?event=push)](https://github.com/Njoguu/jik-api-v2.0-Alpha/actions/workflows/tests.yml)
+[![jikAPI](https://github.com/Njoguu/jikAPI/actions/workflows/jikAPI.yml/badge.svg?event=push)](https://github.com/Njoguu/jikAPI/actions/workflows/jikAPI.yml)
+[![Tests](https://github.com/Njoguu/jikAPI/actions/workflows/tests.yml/badge.svg)](https://github.com/Njoguu/jikAPI/actions/workflows/tests.yml)
 
 ## Description:
 jikAPI (Jobs In Kenya Live API) is a Job Search REST API that provides job postings data to users. It allows users to search for job opportunities that have been recently posted by employers in Kenya. <br>
@@ -28,7 +28,7 @@ To use the API, make HTTP requests to the appropriate endpoint with the desired 
 Clone the repository using the following command.
 
 ```bash
-git clone https://github.com/Njoguu/jik-api-v2.0-Alpha.git
+git clone https://github.com/Njoguu/jikAPI.git
 ```
 
 ### Viewing The App: with Docker
@@ -53,5 +53,3 @@ To run the API tests, use the following command: `pytest`
 
 ## Documentation
 The API uses Swagger for API documentation. To access the documentation, navigate to `/api/v2/docs` in your web browser when the API is running.
-
-
