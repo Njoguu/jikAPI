@@ -1,0 +1,16 @@
+name: auto-approve
+on: pull_request
+
+permissions:
+  pull-requests: write
+          
+jobs:
+  autoapproval:
+    runs-on: ubuntu-latest
+    name: Autoapproval
+    if: ${{ github.actor == 'Njoguu' }}
+    steps:
+      - uses: dkhmelenko/autoapproval@v1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  
