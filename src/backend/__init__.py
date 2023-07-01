@@ -16,6 +16,8 @@ from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
 import datetime
 from backend.config.caching import cache
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 load_dotenv()
 
@@ -62,6 +64,19 @@ def create_app(test_config=None):
     app.register_blueprint(blueprint=auth)
     app.register_blueprint(blueprint=postings)
     app.register_blueprint(blueprint=newsletter)
+
+    # Initialize the rate limiter
+    limiter = Limiter(
+                app=app,
+                key_func=get_remote_address,
+                enabled=True,
+                default_limits=["40 per day", "5 per minute"],
+                storage_uri=os.getenv("STORAGE_URI"),  
+                storage_options={"socket_connect_timeout": 30},
+                strategy="fixed-window"
+            )
+
+    limiter.limit("5 per minute", error_message="5 requests per minute")(postings)
 
     recaptcha_API_key = os.environ['RECAPTCHA_API_KEY']
 
