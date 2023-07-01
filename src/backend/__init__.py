@@ -15,7 +15,7 @@ from flask_jwt_extended import JWTManager
 # from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
 import datetime
-from backend.config.caching import cache
+from .config.caching import init_cache
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
@@ -28,21 +28,11 @@ def create_app(test_config=None):
    
     app = Flask(__name__, instance_relative_config=True, template_folder=template_dir, static_folder=static_dir)    
 
+    init_cache(app)
+
     # app.config['CACHE_TYPE'] = 'redis'
     # app.config['CACHE_REDIS_HOST'] = 'redis'
     # app.config['CACHE_REDIS_PORT'] = 7505
-
-    # Schedule jobs to be run
-    # tableName = os.environ['TABLENAME']
-    # scheduler = BackgroundScheduler(daemon=True)
-    # scheduler.add_job(func=scraper1(tableName), trigger="interval", hours=1)
-    # scheduler.add_job(func=scraper2(tableName), trigger="interval", hours=1.5)
-    # scheduler.start()
-    # # ensure that the scheduler is stopped when the Flask app is shut down
-    # atexit.register(lambda: scheduler.shutdown())
-
-    # Initialize the cache
-    cache.init_app(app)
 
     if test_config is None:
 
