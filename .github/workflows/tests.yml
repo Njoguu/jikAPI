@@ -16,6 +16,7 @@ jobs:
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       RECAPTCHA_API_SECRET_KEY: ${{ secrets.RECAPTCHA_API_SECRET_KEY }}
       RECAPTCHA_API_KEY: ${{ secrets.RECAPTCHA_API_KEY }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
       JWT_SECRET_KEY: ${{ secrets.RECAPTCHA_API_KEY }}
       TABLENAME: ${{ secrets.TABLENAME }}
       userTableName: ${{ secrets.USERTABLENAME }}
