@@ -61,7 +61,7 @@ def create_app(test_config=None):
                 key_func=get_remote_address,
                 enabled=True,
                 default_limits=["40 per day", "5 per minute"],
-                storage_uri=os.getenv("STORAGE_URI"),  
+                storage_uri=os.getenv("REDIS_URL") + "/1",  
                 storage_options={"socket_connect_timeout": 30},
                 strategy="fixed-window"
             )
