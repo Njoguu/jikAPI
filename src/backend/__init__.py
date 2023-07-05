@@ -15,7 +15,6 @@ from flask_jwt_extended import JWTManager
 # from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
 import datetime
-from .config.caching import init_cache
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
@@ -28,7 +27,6 @@ def create_app(test_config=None):
    
     app = Flask(__name__, instance_relative_config=True, template_folder=template_dir, static_folder=static_dir)    
 
-    init_cache(app)
 
     # app.config['CACHE_TYPE'] = 'redis'
     # app.config['CACHE_REDIS_HOST'] = 'redis'

@@ -7,7 +7,6 @@ from backend import database as dbcons
 from flask_jwt_extended import jwt_required
 from flasgger import swag_from
 from dotenv import load_dotenv
-from .config.caching import init_cache, cache
 
 load_dotenv()
 
@@ -45,7 +44,6 @@ def paginate(jobs, page, per_page):
 
 # Route to retrieve the list of available jobs
 @postings.route('/api/v2/jobs', methods=['GET'])
-@cache.cached(timeout=300)
 @swag_from('./docs/postings/jobs.yaml')     #--> Use the 'swag_from' decorator to document this endpoint in the Swagger UI
 def available_jobs():
     try:
