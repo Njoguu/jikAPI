@@ -13,7 +13,7 @@ template = {
             "name": "Apache 2.0",
             "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
         },
-        "version" : "2.0.1"
+        "version" : "2.1.1"
     },
     "basePath": "/api/v2/",
     "schemes" : [

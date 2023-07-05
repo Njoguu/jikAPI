@@ -15,7 +15,8 @@ from flask_jwt_extended import JWTManager
 # from apscheduler.schedulers.background import BackgroundScheduler
 from dotenv import load_dotenv
 import datetime
-from backend.config.caching import cache
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 load_dotenv()
 
@@ -26,21 +27,10 @@ def create_app(test_config=None):
    
     app = Flask(__name__, instance_relative_config=True, template_folder=template_dir, static_folder=static_dir)    
 
+
     # app.config['CACHE_TYPE'] = 'redis'
     # app.config['CACHE_REDIS_HOST'] = 'redis'
     # app.config['CACHE_REDIS_PORT'] = 7505
-
-    # Schedule jobs to be run
-    # tableName = os.environ['TABLENAME']
-    # scheduler = BackgroundScheduler(daemon=True)
-    # scheduler.add_job(func=scraper1(tableName), trigger="interval", hours=1)
-    # scheduler.add_job(func=scraper2(tableName), trigger="interval", hours=1.5)
-    # scheduler.start()
-    # # ensure that the scheduler is stopped when the Flask app is shut down
-    # atexit.register(lambda: scheduler.shutdown())
-
-    # Initialize the cache
-    cache.init_app(app)
 
     if test_config is None:
 
@@ -62,6 +52,19 @@ def create_app(test_config=None):
     app.register_blueprint(blueprint=auth)
     app.register_blueprint(blueprint=postings)
     app.register_blueprint(blueprint=newsletter)
+
+    # Initialize the rate limiter
+    limiter = Limiter(
+                app=app,
+                key_func=get_remote_address,
+                enabled=True,
+                default_limits=["40 per day", "5 per minute"],
+                storage_uri=os.environ["REDIS_URL"] + "/1",  
+                storage_options={"socket_connect_timeout": 30},
+                strategy="fixed-window"
+            )
+
+    limiter.limit("5 per minute", error_message="5 requests per minute")(postings)
 
     recaptcha_API_key = os.environ['RECAPTCHA_API_KEY']
 
