@@ -58,6 +58,6 @@ tzdata==2022.7
 tzlocal==4.2
 urllib3==1.26.12
 validators==0.20.0
-Werkzeug==2.2.3
+Werkzeug==3.0.1
 wrapt==1.15.0
 zipp==3.10.0
